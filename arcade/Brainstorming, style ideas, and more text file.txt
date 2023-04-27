@@ -1,0 +1,79 @@
+Main Style Sheet and Ideas textfile 
+
+Key to read: due to simplicity of the Notepad app, I will 
+maintain readable format through arduous adherance to this
+arbitrary code of honor, so to speak. The general format 
+will be to write 5 separate blocks of text to describe the 
+Goal of that webpage, what I will do in HTML, CSS, and JS, 
+and anything else that may need to be listed. 
+Format wise, I will try to make a new text block for all 5 
+sites. Indents with a hyphen indicate the line below is a 
+subfeature of the line above, or necessary detail. 
+
+Overarching Goal: Create 5 websites that are all accessed through 
+the 'home' page. I will start with the home page. 
+
+for ease of access, here's rgb for colors i might use
+Eggplant (subdued purple) : 83, 59, 77
+Brunswick Green : 0, 70, 67
+Night black: 8, 12, 9
+Snow white: 255, 250, 251
+Amethyst (strong purple): 155, 93, 229
+
+
+
+			    Home Page 
+
+
+
+
+Goal: create a website that enables user to select 4 separate
+games to play. 
+
+HTML: -NOTE that the structure of the main page will be used for the others
+
+- Header will feature really fast made 'JACK'S ARCADE' logo on left side, and 
+home button, and an obvious link to the other games on the right
+- Body will feature a plain, appealing BG color, a large, visible container
+for all of the games, a picture of the game and description as well as 
+a 'PLAY NOW' button that will redirect to other pages 
+- EXTRA: footer will exist, but feature just a clickable 
+picture link to my GitHub repo for the project 
+
+CSS: 
+- The color scheme will be very on-the-nose arcade, but not obnoxious.
+in human speak, the main colors will be black, white, purple, and maybe blue. 
+- EXTRA: add in the arcade carpet design as a background, and likely reduce the
+opacity a little bit so it isn't garish or difficult to read text 
+- First pass: Use black and white as the main colors, and the others as 
+splashes of color 
+- font: stick with basic sans-serif at first, then if extra time, try
+to find an appropriately whacky font that could be used perhaps 
+- header will be sticky if needed 
+
+JS: event handlers for clicking on PLAY NOW button (actually, could
+probably just get away with wrapping the button in an <a> tag or vice versa
+
+				
+
+
+				GAME 1 - TicTacToe 
+similar project done already: https://codepen.io/johntillman123/pen/YzJqXqo
+
+Goals for singleplayer: 
+- See the name 'Computer' displayed as my opponent
+- have the Computer player make moves as if it were a human player 
+with the correct mark in an empty space
+
+Goals for two player game:
+- Allow players to enter their names and have them displayed 
+- Have function to choose game order 
+- Take turns placing their marks in empty spaces
+- not be able to place their marks in an occupied space 
+- be told when a move causes a player to win or draw
+- start the game over without having to reset the browser 
+
+HTML: 
+-Header same as mainpage 
+- 
+	
