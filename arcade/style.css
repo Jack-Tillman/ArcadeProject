@@ -2,25 +2,39 @@
     margin:0;
     padding:0;
     box-sizing: border-box; 
+    text-align: center;
+    font-family:Arial, Helvetica, sans-serif;
 }
 
-body{
+body {
     background-color: rgb(214, 238, 240);   
 }
 
-header{
+header {
     overflow:hidden;
     background-color: rgb(37, 28, 161);
-    padding: 20px 10px;
+    padding: 1rem 1rem;
+    margin:0px;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
+header .header-left {
+    display:flex;
+    align-items: center;
+}
 header a {
-    font-size:1rem;
-    line-height: 1.5rem;
+    font-size:1.5rem;
     text-decoration: none;
     color:rgb(214, 238, 240);
+    margin:0rem 0.5rem;
+    padding:0rem 0.5rem;
+    line-height:1rem;
 }
 
-header a.logo{
-    font-size:1.5rem; /*same value as the line height in header a so that header doesn't increase in size when font gets bigger for responsive design */
+header a.logo {
+    font-size:1rem; /*same value as the line height in header a so that header doesn't increase in size when font gets bigger for responsive design */
 }
+
+
