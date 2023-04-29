@@ -15,10 +15,13 @@ the 'home' page. I will start with the home page.
 
 for ease of access, here's rgb for colors i might use
 Eggplant (subdued purple) : 83, 59, 77
-Brunswick Green : 0, 70, 67
+new green : 43, 153, 80
 Night black: 8, 12, 9
 Snow white: 255, 250, 251
 Amethyst (strong purple): 155, 93, 229
+
+Royal purple: 37, 28, 161
+ white: 214, 238, 240
 
 
 
