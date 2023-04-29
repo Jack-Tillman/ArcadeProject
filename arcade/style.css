@@ -24,6 +24,7 @@ header .header-left {
     display:flex;
     align-items: center;
 }
+
 header a {
     font-size:1.5rem;
     text-decoration: none;
@@ -37,4 +38,71 @@ header a.logo {
     font-size:1rem; /*same value as the line height in header a so that header doesn't increase in size when font gets bigger for responsive design */
 }
 
+header a:hover {
+    color:#0ee00e;
+}
 
+header a.active { 
+    color:rgb(255, 0, 106);
+}
+
+main {
+    display:flex;
+    flex-flow:column nowrap;
+}
+
+main > .game-container { 
+    display:flex;
+    flex-flow:row wrap;
+    justify-content: space-around;
+    gap:3rem;
+    width:40rem;
+    margin:auto;
+    padding:0.25rem;
+    border:5px ridge black;
+    border-radius:5%;
+}
+
+main > .welcome-container {
+    padding:0.5rem;
+}
+
+main > .welcome-container > * {
+    padding:1rem;
+}
+
+.game {
+    border:0.35rem solid rgb(128, 229, 128);
+    padding:0.5rem;
+    border-radius:15%;
+    overflow:hidden;
+}
+
+
+/* media queries rough draft
+@media screen and (max-width:500px) {
+    header {
+        flex-flow:column nowrap;
+        padding:0rem 0rem;
+        justify-content: center;
+    }
+
+    header .header-left {
+        display:block;
+    }
+
+    header a { 
+        margin:0;
+        padding:0;
+    }
+
+    main {
+        flex-flow:row wrap;
+    }
+
+    .game-container {
+        flex-flow:column nowrap;
+    }
+
+}
+*/
