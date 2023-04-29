@@ -10,26 +10,28 @@
 <body>
 <header>
    <div class = "header-left" >
-       <a href="" class="logo"><img src="./images_and_assets/logo.png" alt="logo for Jack's Arcade" width="50px" height="50px"></a>
+       <a href="index.html" class="logo"><img src="./images_and_assets/logo.png" alt="logo for Jack's Arcade" width="50px" height="50px"></a>
         <a href="index.html">Home</a>
     </div> 
    <div class = "header-right" >
-        <a class="tictactoe" class="active">Tic-Tac-Toe</a>
-        <a class="snake">Snake</a>
-        <a class="mancala">Mancala</a>
-        <a class="connectfour">Connect Four</a>
+        <a class="tictactoe active" href="./tictactoepage.html">Tic-Tac-Toe</a>
+        <a class="snake" href="./snakepage.html">Snake</a>
+        <a class="mancala" href="./mancalapage.html">Mancala</a>
+        <a class="connectfour" href="./connectfourpage.html">Connect Four</a>
    </div>
 </header>
 <main>
     <div class="welcome-container">
-        <h1>Jack's Arcade</h1>
-        <p class="welcome-text">Welcome to Jack's Arcade! Click on one of our four games below to try any of our four games on display!</p>
+        <h1>Tic Tac Toe</h1>
+        <p class="welcome-text">Welcome to Tic-Tac-Toe! Click below to start!</p>
     </div>
-    <div class="game-container">
-        <div class="tictactoe-container game"><img src="./images_and_assets/tictactoe.png" alt="the board game, Tic-Tac-Toe" height="250px" width="250px"></div>
-        <div class="snake-container game"><img src="./images_and_assets/snakegame.png" alt="the arcade game, Snake" height="250px" width="250px"/></div>
-        <div class="mancala-container game"><img src="./images_and_assets/mancala.jpg" alt="the board game, Mancala" height="250px" width="250px"/></div>
-        <div class="connectfour-container game"><img src="./images_and_assets/connect4game.jpg" alt="the board game, Connect Four" height="250px" width="250px"/></div>
+    <div class="game-box">
+        <canvas id="canvas"></canvas>
+    </div>
+    <div class="game-info">
+        <h2>Tic Tac Toe</h2>
+        <p id="game-status">Game Status:</p>
+        <p id="game-score">Game Score:</p>
     </div>
 </main>
     <script src="appOne.js"></script>
