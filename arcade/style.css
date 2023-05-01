@@ -78,14 +78,6 @@ main > .welcome-container > * {
     overflow:hidden;
 }
 
-/*Tic-Tac-Toe*/
-
-#canvas { 
-    width:50rem;
-    height:40rem;
-    border:5px solid rgb(37, 28, 161);
-    border-radius:10%;
-}
 
 /* media queries rough draft
 @media screen and (max-width:500px) {
