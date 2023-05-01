@@ -1,0 +1,90 @@
+/*Tic-Tac-Toe*/
+
+:root {
+    --cell-size: 100px; /*make a CSS variable to automate keeping cells equally sized*/
+    --mark-size: calc(var(--cell-size) * .9); /*mark size will be 90% size of cell size*/
+    --background-color: 
+}
+
+.game--board { 
+    width:18.5rem;
+    margin:50px auto;
+    display:grid;
+    grid-template-columns: repeat(3, auto);
+    justify-content:center;
+    align-content: center;
+    justify-items: center;
+    align-items: center;
+}
+
+.cell {
+    width:var(--cell-size);
+    height:var(--cell-size);
+    border: 1px solid black;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /*setting .cell to relative and .cell.xbefore,after to absolute achieves perfectly centered X's*/
+    cursor: pointer;
+}
+/*remove borders around the grid to make proper tic tac toe board*/
+.cell:first-child,
+.cell:nth-child(2),
+.cell:nth-child(3) {
+    border-top: none;
+}
+
+.cell:nth-child(3n + 1) {
+    border-left: none;
+}
+
+.cell:nth-child(3n + 3) {
+    border-right:none;
+}
+
+.cell:last-child,
+.cell:nth-child(7),
+.cell:nth-child(8) {
+    border-bottom: none;
+}
+/*if cell has an x or an o already, cursor changes to not-allowed */
+.cell.x,
+.cell.circle {
+    cursor: not-allowed;
+}
+
+.cell.x::before,
+.cell.x::after { 
+    content: ''; /*empty string so both before and after elements render*/
+    width: calc(var(--mark-size) * .15);
+    height: var(--mark-size);
+    background-color: rgb(0, 0, 0);
+    position: absolute;
+}
+
+.cell.x::before {
+    transform: rotate(45deg);
+}
+
+.cell.x::after {
+    transform: rotate(-45deg);
+}
+
+.cell.circle::before,
+.cell.circle::after { 
+    content: ''; /*empty string so both before and after elements render*/
+    border-radius:50%;
+    position: absolute;
+}
+
+.cell.circle::before {
+    width: var(--mark-size);
+    height: var(--mark-size);
+    background-color: black;
+}
+
+.cell.circle::after {
+    width:calc(var(--mark-size) * 0.75);
+    height:calc(var(--mark-size) * 0.75);
+    background-color: rgb(255, 255, 255);
+}
