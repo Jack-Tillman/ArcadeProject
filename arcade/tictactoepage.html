@@ -26,7 +26,23 @@
         <p class="welcome-text">Welcome to Tic-Tac-Toe! Click below to start!</p>
     </div>
     <div class="game-box">
-        <canvas id="canvas"></canvas>
+        <canvas id="canvas">
+            <div class="board" id="board">
+                <div class="cell" id="data-cell"></div>
+                <div class="cell" id="data-cell"></div>
+                <div class="cell" id="data-cell"></div>
+                <div class="cell" id="data-cell"></div>
+                <div class="cell" id="data-cell"></div>
+                <div class="cell" id="data-cell"></div>
+                <div class="cell" id="data-cell"></div>
+                <div class="cell" id="data-cell"></div>
+                <div class="cell" id="data-cell"></div>
+            </div>
+        </canvas>
+        <div class="winning-message" id="winningMessage">
+            <div id="winningMessageText"></div>
+            <button id="restartButton">Restart</button>
+        </div>
     </div>
     <div class="game-info">
         <h2>Tic Tac Toe</h2>
