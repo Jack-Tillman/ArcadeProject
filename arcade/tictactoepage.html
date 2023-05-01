@@ -27,9 +27,9 @@
         <p class="welcome-text">Welcome to Tic-Tac-Toe! Click below to start!</p>
     </div>
     <div class="game-box">
-            <div class="game--board x" id="board">
-                <div class="cell x" data-cell></div> <!--cell will be used by CSS, data-cell will be used by JS-->
-                <div class="cell circle" data-cell></div>
+            <div class="game--board" id="board">
+                <div class="cell" data-cell></div> <!--cell will be used by CSS, data-cell will be used by JS-->
+                <div class="cell" data-cell></div>
                 <div class="cell" data-cell></div>
                 <div class="cell" data-cell></div>
                 <div class="cell" data-cell></div>
@@ -41,6 +41,7 @@
     </div>
     <div class="game-info">
         <div class="winning-message" id="winningMessage">
+            <div data-winning-message-text></div>
         <button id="restartButton">Restart</button>
     </div>
 </main>

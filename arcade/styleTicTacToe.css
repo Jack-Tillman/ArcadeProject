@@ -28,9 +28,7 @@
 }
 
 /*Excess border removal section*/
-.cell:first-child,
-.cell:nth-child(2),
-.cell:nth-child(3) {
+.cell:nth-child(-n + 3) {
     border-top: none;
 }
 
@@ -55,37 +53,86 @@
 }
 
 .cell.x::before,
-.cell.x::after { 
-    content: ''; /*empty string so both before and after elements render*/
-    width: calc(var(--mark-size) * .15);
-    height: var(--mark-size);
-    background-color: rgb(0, 0, 0);
-    position: absolute;
-}
-
-.cell.x::before {
-    transform: rotate(45deg);
-}
-
 .cell.x::after {
-    transform: rotate(-45deg);
+    background-color:rgb(0, 0, 0);
 }
 
-.cell.circle::before,
-.cell.circle::after { 
+/*hovering over empty cells displays a lighter colored x or circle*/
+.game--board.x .cell:not(.x):not(.circle):hover::before,
+.game--board.x .cell:not(.x):not(.circle):hover::after {
+    background-color: lightgrey;
+}
+
+.game--board.circle .cell:not(.x):not(.circle):hover::before{
     content: ''; /*empty string so both before and after elements render*/
     border-radius:50%;
     position: absolute;
+    width: calc(var(--mark-size) * 0.625);
+    height: calc(var(--mark-size) * 0.625);
+    box-shadow: 0 0 0 calc(var(--mark-size) * 0.15) lightgrey;
 }
 
-.cell.circle::before {
-    width: var(--mark-size);
+/* :not(.x):not(.circle) ensures that the mark doesn't show up when hovering over a filled in cell*/
+.cell.x::before,
+.cell.x::after,
+.game--board.x .cell:not(.x):not(.circle):hover::before,
+.game--board.x .cell:not(.x):not(.circle):hover::after { 
+    content: ''; /*empty string so both before and after elements render*/
+    width: calc(var(--mark-size) * .15);
     height: var(--mark-size);
-    background-color: black;
+    position: absolute;
+}
+/*rotate 45 and -45 for before and after will get perfect X */
+.cell.x::before,
+.game--board.x .cell:not(.x):not(.circle):hover::before {
+    transform: rotate(45deg);
 }
 
-.cell.circle::after {
-    width:calc(var(--mark-size) * 0.75);
-    height:calc(var(--mark-size) * 0.75);
-    background-color: rgb(255, 255, 255);
+.cell.x::after,
+.game--board.x .cell:not(.x):not(.circle):hover::after  {
+    transform: rotate(-45deg);
+}
+
+.cell.circle::before { 
+    content: ''; /*empty string so both before and after elements render*/
+    border-radius:50%;
+    position: absolute;
+    width: calc(var(--mark-size) * 0.625);
+    height: calc(var(--mark-size) * 0.625);
+    box-shadow: 0 0 0 calc(var(--mark-size) * 0.15) #000000;
+}
+
+.winning-message { 
+    display:none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color:white;
+    font-size:6rem;
+}
+
+.winning-message button {
+    font-size:3rem;
+    background-color: white;
+    border: 1px solid black;
+    padding: 1rem 2rem;
+    border-radius:10%;
+    cursor: pointer;
+}
+
+.winning-message button:hover {
+    background-color: black;
+    color:white;
+    border-color:white;
+}
+
+/*when a class called 'show' is added to winning message, then the display is changed from none to flex, displaying the winning message screen! */
+.winning-message.show {
+display:flex;
 }
