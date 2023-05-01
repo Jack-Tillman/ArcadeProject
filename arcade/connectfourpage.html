@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jack's Connect Four Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+   <div class = "header-left" >
+       <a href="index.html" class="logo"><img src="./images_and_assets/logo.png" alt="logo for Jack's Arcade" width="50px" height="50px"></a>
+        <a href="index.html">Home</a>
+    </div> 
+   <div class = "header-right" >
+        <a class="tictactoe" href="./tictactoepage.html">Tic-Tac-Toe</a>
+        <a class="snake" href="./snakepage.html">Snake</a>
+        <a class="mancala" href="./mancalapage.html">Mancala</a>
+        <a class="connectfour active" href="./connectfourpage.html">Connect Four</a>
+   </div>
+</header>
+<main>
+    <div class="welcome-container">
+        <h1>Connect Four</h1>
+        <p class="welcome-text">Welcome to my Connect Four game! Click below to start!</p>
+    </div>
+    <div class="game-box">
+        <canvas id="canvas"></canvas>
+    </div>
+    <div class="game-info">
+        <h2>Connect Four</h2>
+        <p id="game-status">Game Status:</p>
+        <p id="game-score">Game Score:</p>
+    </div>
+</main>
+    <script src="appConnectFour.js"></script>
+</body>
+</html>
