@@ -2,8 +2,7 @@
 
 :root {
     --cell-size: 100px; /*make a CSS variable to automate keeping cells equally sized*/
-    --mark-size: calc(var(--cell-size) * .9); /*mark size will be 90% size of cell size*/
-    --background-color: 
+    --mark-size: calc(var(--cell-size) * .9); /*mark size will be 90% size of cell size*/ 
 }
 
 .game--board { 
@@ -27,7 +26,8 @@
     position: relative; /*setting .cell to relative and .cell.xbefore,after to absolute achieves perfectly centered X's*/
     cursor: pointer;
 }
-/*remove borders around the grid to make proper tic tac toe board*/
+
+/*Excess border removal section*/
 .cell:first-child,
 .cell:nth-child(2),
 .cell:nth-child(3) {
@@ -47,6 +47,7 @@
 .cell:nth-child(8) {
     border-bottom: none;
 }
+
 /*if cell has an x or an o already, cursor changes to not-allowed */
 .cell.x,
 .cell.circle {
