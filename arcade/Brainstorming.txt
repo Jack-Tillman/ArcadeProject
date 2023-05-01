@@ -79,4 +79,13 @@ Goals for two player game:
 HTML: 
 -Header same as mainpage 
 - 
-	
+
+
+
+Misc Notes:
+Can use a similar validator that was used for Sudoku project for both tic tac Toe
+and connect 4 / 
+Somewhere in the global scope, keep a variable that represents what you
+want the current 'state' of the game to look like 
+let gameArray = ['X', null, 'O', null, null, null, null, null, null]
+every time click on board, (check pic for more)
