@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jack's TicTacToe Game</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styleTicTacToe.css">
 </head>
 <body>
 <header>
@@ -26,28 +27,21 @@
         <p class="welcome-text">Welcome to Tic-Tac-Toe! Click below to start!</p>
     </div>
     <div class="game-box">
-        <canvas id="canvas">
-            <div class="board" id="board">
-                <div class="cell" id="data-cell"></div>
-                <div class="cell" id="data-cell"></div>
-                <div class="cell" id="data-cell"></div>
-                <div class="cell" id="data-cell"></div>
-                <div class="cell" id="data-cell"></div>
-                <div class="cell" id="data-cell"></div>
-                <div class="cell" id="data-cell"></div>
-                <div class="cell" id="data-cell"></div>
-                <div class="cell" id="data-cell"></div>
+            <div class="game--board x" id="board">
+                <div class="cell x" data-cell></div> <!--cell will be used by CSS, data-cell will be used by JS-->
+                <div class="cell circle" data-cell></div>
+                <div class="cell" data-cell></div>
+                <div class="cell" data-cell></div>
+                <div class="cell" data-cell></div>
+                <div class="cell" data-cell></div>
+                <div class="cell" data-cell></div>
+                <div class="cell" data-cell></div>
+                <div class="cell" data-cell></div>
             </div>
-        </canvas>
-        <div class="winning-message" id="winningMessage">
-            <div id="winningMessageText"></div>
-            <button id="restartButton">Restart</button>
-        </div>
     </div>
     <div class="game-info">
-        <h2>Tic Tac Toe</h2>
-        <p id="game-status">Game Status:</p>
-        <p id="game-score">Game Score:</p>
+        <div class="winning-message" id="winningMessage">
+        <button id="restartButton">Restart</button>
     </div>
 </main>
     <script src="appTicTacToe.js"></script>
