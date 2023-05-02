@@ -5,6 +5,26 @@
     --mark-size: calc(var(--cell-size) * .9); /*mark size will be 90% size of cell size*/ 
 }
 
+div.player--names--container {
+border:1px solid black;
+margin:0.5rem auto;
+display:flex;
+justify-content: center;
+
+}
+
+div#playerOneName,
+div#playerTwoName {
+    font-family:Verdana, Geneva, Tahoma, sans-serif; /*font change to set these labels apart from surrounding text*/
+    font-size:1.5rem;
+    margin:0 10rem;
+    color:rgb(16, 38, 240);
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+
 .game--board { 
     width:18.5rem;
     margin:50px auto;
