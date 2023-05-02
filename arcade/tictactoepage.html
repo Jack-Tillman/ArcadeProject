@@ -4,6 +4,109 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jack's Tic Tac Toe Game</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styleTicTacToe.css">
+</head>
+<body>
+    <header>
+        <div class = "header-left" >
+            <a href="index.html" class="logo"><img src="./images_and_assets/logo.png" alt="logo for Jack's Arcade" width="50px" height="50px"></a>
+             <a href="index.html">Home</a>
+         </div> 
+        <div class = "header-right" >
+             <a class="tictactoe active" href="./tictactoepage.html">Tic-Tac-Toe</a>
+             <a class="snake" href="./snakepage.html">Snake</a>
+             <a class="mancala" href="./mancalapage.html">Mancala</a>
+             <a class="connectfour" href="./connectfourpage.html">Connect Four</a>
+        </div>
+     </header>
+    <main>
+        <h1>Tic-Tac-Toe</h1>
+        <h2>It's X's turn!</h2>
+        <div class="flex-container flex-column">
+            <div class="flex-container flex-wrap" id="board">
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+            </div>
+            <button id="reset-button">reset</button>
+        </div>
+    </main>
+<script src="appTicTacToe.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jack's TicTacToe Game</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="styleTicTacToe.css">
@@ -32,7 +135,7 @@
         <div class="player--names" id="playerTwoName"></div>
         </div>
             <div class="game--board" id="board">
-                <div class="cell" data-cell></div> <!--cell will be used by CSS, data-cell will be used by JS-->
+                <div class="cell" data-cell></div> 
                 <div class="cell" data-cell></div>
                 <div class="cell" data-cell></div>
                 <div class="cell" data-cell></div>
@@ -51,4 +154,4 @@
 </main>
     <script src="appTicTacToe.js"></script>
 </body>
-</html>
+</html> 
