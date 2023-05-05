@@ -64,7 +64,7 @@ Game flow components
 **TO DO
 - 'null' and 'undefined' check for getUsers() 
 - incorporate swapTurn array syntax into handleTurn
-
+- for the first turn, show whose move it is 
 
 */
 
@@ -134,6 +134,7 @@ function handleTurn() {
     const tempOne = gameState.players[0];
     const tempTwo = gameState.players[1];
     const turnContent = document.createTextNode(`It is ${gameState.players[1]}'s turn!`);
+    currentTurn.appendChild(turnContent);
     if (gameState.turnOrder[0] == 'O') {
         gameState.turnOrder[0] = 'X';
         gameState.turnOrder[1] = 'O';
@@ -143,62 +144,12 @@ function handleTurn() {
     }
     gameState.players[0] = tempTwo;
     gameState.players[1] = tempOne;
-    currentTurn.appendChild(turnContent);
+
+  if (currentTurn.hasChildNodes()) {
+   currentTurn.textContent = (`It is ${gameState.players[0]}'s turn!`);
+    }
     return gameState;
 };
-
-// const swapTurn = (array, index1, index2) => {
-//     [gameState.turnOrder[0], gameState.turnOrder[1]] = [gameState.turnOrder[1], gameState.turnOrder[0]];
-// };
-// swapTurn(gameState.turnOrder, 0, 1);
-
-// listeners
-function onBoardClick() {
-  // update state, maybe with another dozen or so helper functions...
-/*when user clicks a cell, 
-- get current state of board and check if the cell is null or not 
-    - additionally, this function can check if the potential mark will result in a win or a tie 
-        - if the game is a win or tie, the winner is declared (if win) or tie declared, 
-        and user is prompted to reset game
-- if it is null, then the mark is made. The board state is updated in gameState as well as on screen 
-- if it is not null, then no mark is made. One way to go about this is to utilize pointer and disable clicks
-on cells that have the property of filled in 
-- after a move is made, and no win or tie declared, then the turns are swapped 
-*/
-const cells = document.getElementsByClassName('cell');
-for (let i = 0; i < cells.length; i++){
-    cells[i].addEventListener('click', function onClick(event) {
-        const newX = document.createTextNode("X");
-        const newO = document.createTextNode("O");
-        const isMarked = cells[i].getAttribute("value");
-
-        if (gameState.turnOrder[0] == "X") {
-            if (isMarked == null || isMarked == undefined) {
-                event.target.classList.add("marked", "X");
-                event.target.style.backgroundColor = 'salmon';    
-                cells[i].setAttribute("value", "X");
-                handleTurn();   
-                event.target.appendChild(newX);
-            } else {
-                alert("You can't do that!");
-            }
-        } else {
-            if (isMarked == null || isMarked == undefined){
-                event.target.classList.add("marked", "O");
-                event.target.style.backgroundColor = 'green';
-                handleTurn();   
-                cells[i].setAttribute("value", "O");
-                event.target.appendChild(newO);
-            } else {
-            alert("You can't do that!");
-        }
-    }
-}
-        )
-    }
-
-renderState();
-}
 
 // function addMark() {
 //     const newMark = document.createElement("span");
@@ -225,9 +176,93 @@ renderState();
 
 //functions to run
 buildInitialState();
+
 onBoardClick();
+// const swapTurn = (array, index1, index2) => {
+//     [gameState.turnOrder[0], gameState.turnOrder[1]] = [gameState.turnOrder[1], gameState.turnOrder[0]];
+// };
+// swapTurn(gameState.turnOrder, 0, 1);
 
+// listeners
+  // update state, maybe with another dozen or so helper functions...
+/*when user clicks a cell, 
+- get current state of board and check if the cell is null or not 
+    - additionally, this function can check if the potential mark will result in a win or a tie 
+        - if the game is a win or tie, the winner is declared (if win) or tie declared, 
+        and user is prompted to reset game
+- if it is null, then the mark is made. The board state is updated in gameState as well as on screen 
+- if it is not null, then no mark is made. One way to go about this is to utilize pointer and disable clicks
+on cells that have the property of filled in 
+- after a move is made, and no win or tie declared, then the turns are swapped 
+*/
+function onBoardClick() {
+    const cells = document.getElementsByClassName("cell");
+  // big for loop, refactor and refine later
+  for (let i = 0; i < cells.length; i++) {
+    cells[i].addEventListener("click", onClick);
+    cells[i].addEventListener('click', updateBoard)
+  }
+}    
+function onClick(event) {
+  const newX = document.createTextNode("X");
+  const newO = document.createTextNode("O");
+  const isMarked = event.target.getAttribute("value");
 
+  if (gameState.turnOrder[0] == "X") {
+    if (isMarked == null || isMarked == undefined) {
+      event.target.classList.add("marked", "X");
+      event.target.style.backgroundColor = "salmon";
+      event.target.setAttribute("value", "X");
+      handleTurn();
+      event.target.appendChild(newX);
+      console.log(
+        `The value of this cell is: ${event.target.getAttribute("value")}!`
+      );
+    } else {
+      alert("You can't do that!");
+    }
+  } else if (isMarked == null || isMarked == undefined) {
+    event.target.classList.add("marked", "O");
+    event.target.style.backgroundColor = "green";
+    handleTurn();
+    event.target.setAttribute("value", "O");
+    event.target.appendChild(newO);
+    console.log(
+      `The value of this cell is: ${event.target.getAttribute("value")}!`
+    );
+  } else {
+    alert("You can't do that!");
+  }
+}
+function updateBoard(event) {
+    for (let i = 0; i < gameState.board.length; i++) {
+        for (let j = 0; j < gameState.board[i].length; j++ ){
+            if (gameState.board[i][j] = null) {
+                gameState.board[i][j].unshift("changed");
+            }
+        }
+    }
+//   for (let j = 0; j < gameState.board.length; j++) {
+//       let boardCell = gameState.board[j];
+//       boardCell[j] = event.target.getAttribute("value");
+//       console.log(boardCell[j]);
+//   }
+  
+}
+ //end of big ol' for loop, remember to refine this later!
+  
+
+/*05/05 5:50 pm update:
+tired
+Done: on click, the cell is given an attribute for which player's turn it is based on the 
+value in the 0 index of turnOrder
+to do: 
+use the attribute of each cell to update the game board, AFTER the attribute is added 
+board evaluator function for win / tie 
+random function for computer player 
+check top to-do for refinements 
+reset button 
+*/
 
 
 

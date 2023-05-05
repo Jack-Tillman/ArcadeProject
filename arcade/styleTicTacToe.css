@@ -22,10 +22,14 @@ h2 {
 }
 
 .cell { 
+    display:flex;
+    justify-content: center;
+    align-items: center;
     border: 2px solid rgba(0,0,0,0.75);
     height:10.9375rem;
     width:10.9375rem;
     background-color: aliceblue;
+    font-size:3rem;
 }
 
 .cell.X,
@@ -34,7 +38,6 @@ h2 {
     border: 2px solid rgba(0,0,0,0.75);
     height:10.9375rem;
     width:10.9375rem;
-    font-size:24px;
     cursor: not-allowed;
 }
 
