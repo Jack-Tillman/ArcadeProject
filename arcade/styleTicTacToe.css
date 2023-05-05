@@ -25,6 +25,17 @@ h2 {
     border: 2px solid rgba(0,0,0,0.75);
     height:10.9375rem;
     width:10.9375rem;
+    background-color: aliceblue;
+}
+
+.cell.X,
+.cell.O,
+.marked { 
+    border: 2px solid rgba(0,0,0,0.75);
+    height:10.9375rem;
+    width:10.9375rem;
+    font-size:24px;
+    cursor: not-allowed;
 }
 
 #reset-button { 
