@@ -144,29 +144,19 @@ function getFirstTurn() {
     return gameState.turnOrder;
 };
 
-function swapTurn() {
-    const currentTurnDisplay = document.getElementById('currentTurnDisplay');
-    //temporary variables to hold the initial player names and index
-    const tempOne = gameState.players[0];
-    const tempTwo = gameState.players[1];
-    const turnContent = document.createTextNode(`It is ${gameState.players[1]}'s turn!`);
-    currentTurnDisplay.appendChild(turnContent);
-    if (gameState.turnOrder[0] == 'O') {
-        gameState.turnOrder[0] = 'X';
-        gameState.turnOrder[1] = 'O';
-    } else {
-    gameState.turnOrder[0] = 'O';
-    gameState.turnOrder[1] = 'X';
-    }
-    gameState.players[0] = tempTwo;
-    gameState.players[1] = tempOne;
 
-  if (currentTurnDisplay.hasChildNodes()) {
-   currentTurnDisplay.textContent = (`It is ${gameState.players[0]}'s turn!`);
-    }
+function swapTurn(array, index1, index2) {
+    let turnOrder = gameState.turnOrder;
+    let players = gameState.players;
+    //destructuring to extract both players and turnOrder array from gameState and swap their position
+    [turnOrder[0], turnOrder[1]] = [turnOrder[1], turnOrder[0]];
+    [players[0], players[1]] = [players[1], players[0]];
+    //update the rendered display so players see whose turn it is 
+    const currentTurnContent = `It is ${players[0]}'s turn!`;
+    const currentTurnDisplay = document.getElementById('currentTurnDisplay');
+    currentTurnDisplay.textContent = currentTurnContent;
     return gameState;
 };
-
 
 
 //functions to run
@@ -196,76 +186,46 @@ function onBoardClick() {
 }
 }    
 
-// function handleClick(e) {
-//     const newX = document.createTextNode("X");
-//     const newO = document.createTextNode("O");
-//     const isMarked = e.target.getAttribute("value");
-//     const clickedCell = e.target;
-//     const currentClass = gameState.turnOrder[0];
-//     updateBoard(clickedCell, currentClass);
-//     boardArray(cellArray);
-//     if (checkWin(currentClass)) {
-//       endGame(false);
-//     } else if (isDraw()) {
-//       endGame(true);
-//     } else {
-//     if (gameState.turnOrder[0] == "X") {
-//       if (isMarked == null || isMarked == undefined) {
-//         e.target.classList.add("marked", "X");
-//         e.target.style.backgroundColor = "salmon";
-//         e.target.setAttribute("value", "X");
-//         swapTurn();
-//         e.target.appendChild(newX);
-//         console.log(
-//           `The value of this cell is: ${e.target.getAttribute("value")}!`
-//         );
-//       } else {
-//         alert("You can't do that!");
-//       }
-//     } else if (isMarked == null || isMarked == undefined) {
-//       e.target.classList.add("marked", "O");
-//       e.target.style.backgroundColor = "green";
-//       swapTurn();
-//       e.target.setAttribute("value", "O");
-//       e.target.appendChild(newO);
-//       console.log(
-//         `The value of this cell is: ${e.target.getAttribute("value")}!`
-//       );
-//     } else {
-//       alert("You can't do that!");
-//     }
-//   }
-//   };
 
 function handleClick(e) {
-  const currentPlayersMark = gameState.turnOrder[0];
-  const newValue = document.createTextNode(currentPlayersMark);
+  const currentPlayersClass = gameState.turnOrder[0];
   const isMarked = e.target.getAttribute("value");
   const clickedCell = e.target;
-  updateBoard(clickedCell, currentPlayersMark);
+
+  updateBoard(clickedCell, currentPlayersClass);
   boardArray(cellArray);
-  if (checkWin(currentPlayersMark)) {
+  
+  if (checkWin(currentPlayersClass)) {
+    //if the next move will result in a player winning, pass false into endGame to avoid draw condition
     endGame(false);
   } else if (isDraw()) {
+    //if next move results in a draw, pass true through endGame() to attain draw condition
     endGame(true);
   } else {
+    //if the next move will neither draw nor cause a win, then the mark can be made, and turn is swapped
     if (!isMarked) {
-      const classesToAdd = `marked${currentPlayersMark}`;
-      const backgroundColor = currentPlayersMark === "X" ? "salmon" : "green";
-      e.target.classList.add(classesToAdd);
-      e.target.style.backgroundColor = backgroundColor;
-      e.target.setAttribute("value", currentPlayersMark);
-      swapTurn();
-      e.target.appendChild(newValue);
-      console.log(`The value of this cell is: ${e.target.getAttribute("value")}!`);
+      markCell(clickedCell, currentPlayersClass);
+      swapTurn(gameState.turnOrder, 0, 1);
     } else {
       alert("You can't do that!");
     }
   }
 };
 
-function updateBoard(clickedCell, currentClass) {
-   clickedCell.classList.add(currentClass);
+//marks a cell based on which cell was clicked and the class of the player clicking 
+function markCell(clickedCell, currentPlayersClass) {
+  const newValue = document.createTextNode(currentPlayersClass);
+  const classToAdd = `${currentPlayersClass}`;
+  const backgroundColor = currentPlayersClass === "X" ? "salmon" : "green";
+    //add current class of player and set attribute to same value so gameState.board can be updated to mirror the game state
+  clickedCell.classList.add(classToAdd);
+  clickedCell.style.backgroundColor = backgroundColor;
+  clickedCell.setAttribute("value", currentPlayersClass);
+  clickedCell.appendChild(newValue);
+};
+
+function updateBoard(clickedCell, currentPlayersClass) {
+   clickedCell.classList.add(currentPlayersClass);
    return cellArray;
 }
 
@@ -275,9 +235,9 @@ function boardArray(cellArray) {
 }
 
 
-// Loop through all arrays in WINNING_BOARDS, checking whether each cell has currentClass (X or O)
-// if every cell in at least one of the winning arrays has currentClass, then return true
-function checkWin(currentClass) {
+// Loop through all arrays in WINNING_BOARDS, checking whether each cell has currentPlayersClass (X or O)
+// if every cell in at least one of the winning arrays has currentPlayersClass, then return true
+function checkWin(currentPlayersClass) {
     // Loop over all winning board combos 
     for (let i = 0; i < WINNING_BOARDS.length; i++) {
         //store each winning combo in boardCheck
@@ -287,7 +247,7 @@ function checkWin(currentClass) {
         for (let j = 0; j < boardCheck.length; j++) {
             let index = boardCheck[j];
             // Check if the cell at the current index has the current class
-            if (!cells[index].classList.contains(currentClass)) {
+            if (!cells[index].classList.contains(currentPlayersClass)) {
                 allIndexesMatch = false;
                 break;
             }
@@ -296,7 +256,7 @@ function checkWin(currentClass) {
             return true;
         }
     }
-    // return false if none of the WINNING_BOARD combos have currentClass as a class for all 3 cells in the combo
+    // return false if none of the WINNING_BOARD combos have currentPlayersClass as a class for all 3 cells in the combo
     return false;
 }
 
