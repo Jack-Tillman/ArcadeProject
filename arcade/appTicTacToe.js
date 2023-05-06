@@ -108,13 +108,26 @@ function versusComputer() {
     } else {
         gameState.versusComputer = false;
     }
+    return gameState;
 };
 
+/*
+computerPlay()
+if the name in 
+*/
+
+
 function getUsers() {
-    const playerOneName = prompt("What is the name of player one?", '');
-    gameState.players[0] = playerOneName;
-    const playerTwoName = prompt("What is the name of player two?", '');
-    gameState.players[1] = playerTwoName;
+    if (gameState.versusComputer === true) {
+        const playerOneName = prompt("What is the name of player one?", '');
+        gameState.players[0] = playerOneName;
+        gameState.players[1] = "Computer";
+    } else {
+        const playerOneName = prompt("What is the name of player one?", '');
+        gameState.players[0] = playerOneName;
+        const playerTwoName = prompt("What is the name of player two?", '');
+        gameState.players[1] = playerTwoName;
+    }
     return gameState;
 };
 
@@ -183,45 +196,72 @@ function onBoardClick() {
 }
 }    
 
+// function handleClick(e) {
+//     const newX = document.createTextNode("X");
+//     const newO = document.createTextNode("O");
+//     const isMarked = e.target.getAttribute("value");
+//     const clickedCell = e.target;
+//     const currentClass = gameState.turnOrder[0];
+//     updateBoard(clickedCell, currentClass);
+//     boardArray(cellArray);
+//     if (checkWin(currentClass)) {
+//       endGame(false);
+//     } else if (isDraw()) {
+//       endGame(true);
+//     } else {
+//     if (gameState.turnOrder[0] == "X") {
+//       if (isMarked == null || isMarked == undefined) {
+//         e.target.classList.add("marked", "X");
+//         e.target.style.backgroundColor = "salmon";
+//         e.target.setAttribute("value", "X");
+//         swapTurn();
+//         e.target.appendChild(newX);
+//         console.log(
+//           `The value of this cell is: ${e.target.getAttribute("value")}!`
+//         );
+//       } else {
+//         alert("You can't do that!");
+//       }
+//     } else if (isMarked == null || isMarked == undefined) {
+//       e.target.classList.add("marked", "O");
+//       e.target.style.backgroundColor = "green";
+//       swapTurn();
+//       e.target.setAttribute("value", "O");
+//       e.target.appendChild(newO);
+//       console.log(
+//         `The value of this cell is: ${e.target.getAttribute("value")}!`
+//       );
+//     } else {
+//       alert("You can't do that!");
+//     }
+//   }
+//   };
+
 function handleClick(e) {
-  const newX = document.createTextNode("X");
-  const newO = document.createTextNode("O");
+  const currentPlayersMark = gameState.turnOrder[0];
+  const newValue = document.createTextNode(currentPlayersMark);
   const isMarked = e.target.getAttribute("value");
   const clickedCell = e.target;
-  const currentClass = gameState.turnOrder[0];
-  updateBoard(clickedCell, currentClass);
+  updateBoard(clickedCell, currentPlayersMark);
   boardArray(cellArray);
-  if (checkWin(currentClass)) {
+  if (checkWin(currentPlayersMark)) {
     endGame(false);
   } else if (isDraw()) {
     endGame(true);
   } else {
-  if (gameState.turnOrder[0] == "X") {
-    if (isMarked == null || isMarked == undefined) {
-      e.target.classList.add("marked", "X");
-      e.target.style.backgroundColor = "salmon";
-      e.target.setAttribute("value", "X");
+    if (!isMarked) {
+      const classesToAdd = `marked${currentPlayersMark}`;
+      const backgroundColor = currentPlayersMark === "X" ? "salmon" : "green";
+      e.target.classList.add(classesToAdd);
+      e.target.style.backgroundColor = backgroundColor;
+      e.target.setAttribute("value", currentPlayersMark);
       swapTurn();
-      e.target.appendChild(newX);
-      console.log(
-        `The value of this cell is: ${e.target.getAttribute("value")}!`
-      );
+      e.target.appendChild(newValue);
+      console.log(`The value of this cell is: ${e.target.getAttribute("value")}!`);
     } else {
       alert("You can't do that!");
     }
-  } else if (isMarked == null || isMarked == undefined) {
-    e.target.classList.add("marked", "O");
-    e.target.style.backgroundColor = "green";
-    swapTurn();
-    e.target.setAttribute("value", "O");
-    e.target.appendChild(newO);
-    console.log(
-      `The value of this cell is: ${e.target.getAttribute("value")}!`
-    );
-  } else {
-    alert("You can't do that!");
   }
-}
 };
 
 function updateBoard(clickedCell, currentClass) {
