@@ -101,7 +101,7 @@ function getPlayerTwoName() {
 
 startGame();
 
-
+//adds restart functionality to button
 restartButton.addEventListener('click', startGame);
 
 //loop through data-cell nodelist 
@@ -171,21 +171,21 @@ function placeMark(cell, currentClass) {
 }
 //incomplete and road blocked - might need to just redo a  lot of this project honestly! 
 //initialize an empty array, add cells that have no X or CIRCLE class to it, then select a random cell from that array and return it. that returned cell would then be passed through placeMark to simulate a computer selecting a random cell
-function randomMark() {
-    let potentialCells = [];
-    for (let i = 0; i < cellElements.length; i++){
-        let currentCell = cellElements[i];
-        if (currentCell.classList.contains(X_CLASS) || currentCell.classList.contains(CIRCLE_CLASS)) {
-                continue;
-            }else {
-                 potentialCells.unshift(cell);
-                    for (cell of potentialCells) {
-                        cell = currentCell.click();
-                        return cell;
-                    }
-            }
-        }
-    }
+// function randomMark() {
+//     let potentialCells = [];
+//     for (let i = 0; i < cellElements.length; i++){
+//         let currentCell = cellElements[i];
+//         if (currentCell.classList.contains(X_CLASS) || currentCell.classList.contains(CIRCLE_CLASS)) {
+//                 continue;
+//             }else {
+//                  potentialCells.unshift(cell);
+//                     for (cell of potentialCells) {
+//                         cell = currentCell.click();
+//                         return cell;
+//                     }
+//             }
+//         }
+//     }
 
 
 // function randomMark() {

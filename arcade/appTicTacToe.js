@@ -63,7 +63,7 @@ Game flow components
 
 **TO DO
 - 'null' and 'undefined' check for getUsers() 
-- incorporate swapTurn array syntax into handleTurn
+- incorporate swapTurn array syntax into swapTurn
 - for the first turn, show whose move it is 
 
 */
@@ -71,18 +71,27 @@ Game flow components
 'use strict';
 
 // state
-let gameState = {};
+const gameState = {};
+
+const WINNING_BOARDS = [
+    //horizontal row wins *NOTE: abide by 0 index because this is an array
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    //vertical column wins
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    //diagonal wins
+    [0, 4, 8],
+    [2, 4, 6]
+]
 
 function buildInitialState() {
-    gameState.isComputer = [''],
+    gameState.versusComputer = [''],
     gameState.players = ['',''],
     gameState.turnOrder = ['',''],
-    gameState.board = [
-        [null, null, null],
-        [null, null, null],
-        [null, null, null],
-        ];
-    isComputer();
+    versusComputer();
     getUsers();
     getFirstTurn();
 }
@@ -93,48 +102,42 @@ function renderState() {
 
 
 // helper functions 
-function isComputer() { 
-    if(confirm("Would you like to play against a computer? If not, you will play against another person") == true){
-        gameState.isComputer = true;
+function versusComputer() { 
+    if(confirm( "Would you like to play against a computer? If not, you will play against another person") == true ){
+        gameState.versusComputer = true;
     } else {
-        gameState.isComputer = false;
+        gameState.versusComputer = false;
     }
-}
+};
 
 function getUsers() {
     const playerOneName = prompt("What is the name of player one?", '');
     gameState.players[0] = playerOneName;
     const playerTwoName = prompt("What is the name of player two?", '');
     gameState.players[1] = playerTwoName;
-    console.log(playerOneName, playerTwoName, isComputer);
-    console.log(gameState);
     return gameState;
 };
 
 //randomize the order of who takes first turn
 function getFirstTurn() {
     const randomOrder = Math.floor(Math.random() * 100);
-    console.log(randomOrder);
     if (randomOrder > 50){
         gameState.turnOrder = ['X', 'O'];
         alert(`${gameState.players[0]} will play X, ${gameState.players[1]} will play O.`);
-        console.log(gameState.players);
     } else {
         gameState.turnOrder = ['O', 'X'];
         alert(`${gameState.players[0]} will play O, ${gameState.players[1]} will play X.`);
     }
+    return gameState.turnOrder;
 };
 
-
-// both handleTurn and swapTurn do same thing ( i know handleturn works, try swapTurn) -- consider adding these as method of another function maybe
-// switch place of X and O each turn 
-function handleTurn() {
-    const currentTurn = document.getElementById('currentTurn');
+function swapTurn() {
+    const currentTurnDisplay = document.getElementById('currentTurnDisplay');
     //temporary variables to hold the initial player names and index
     const tempOne = gameState.players[0];
     const tempTwo = gameState.players[1];
     const turnContent = document.createTextNode(`It is ${gameState.players[1]}'s turn!`);
-    currentTurn.appendChild(turnContent);
+    currentTurnDisplay.appendChild(turnContent);
     if (gameState.turnOrder[0] == 'O') {
         gameState.turnOrder[0] = 'X';
         gameState.turnOrder[1] = 'O';
@@ -145,43 +148,21 @@ function handleTurn() {
     gameState.players[0] = tempTwo;
     gameState.players[1] = tempOne;
 
-  if (currentTurn.hasChildNodes()) {
-   currentTurn.textContent = (`It is ${gameState.players[0]}'s turn!`);
+  if (currentTurnDisplay.hasChildNodes()) {
+   currentTurnDisplay.textContent = (`It is ${gameState.players[0]}'s turn!`);
     }
     return gameState;
 };
-
-// function addMark() {
-//     const newMark = document.createElement("span");
-//     const markContent = document.createTextNode("Marked");
-//     newMark.appendChild(markContent);
-//     const
-// }
-// cells.addEventListener('click', makeMark());
-//     cells.backgroundColor = "red"
-
-// }
-
-
-
-// const board = document.getElementById('board');
-// board.addEventListener('click', onBoardClick); 
-
-//to update whose turn it is, 
-// const currentTurn = document.getElementById('currentTurn');
-// currentTurn.addEventListener
-
 
 
 
 //functions to run
 buildInitialState();
-
+//target all elements with "cell" class
+const cells = document.getElementsByClassName("cell");
+//use spread syntax to create array of cell classList to use for board checking
+const cellArray = [...cells];
 onBoardClick();
-// const swapTurn = (array, index1, index2) => {
-//     [gameState.turnOrder[0], gameState.turnOrder[1]] = [gameState.turnOrder[1], gameState.turnOrder[0]];
-// };
-// swapTurn(gameState.turnOrder, 0, 1);
 
 // listeners
   // update state, maybe with another dozen or so helper functions...
@@ -195,60 +176,122 @@ onBoardClick();
 on cells that have the property of filled in 
 - after a move is made, and no win or tie declared, then the turns are swapped 
 */
+
 function onBoardClick() {
-    const cells = document.getElementsByClassName("cell");
-  // big for loop, refactor and refine later
-  for (let i = 0; i < cells.length; i++) {
-    cells[i].addEventListener("click", onClick);
-    cells[i].addEventListener('click', updateBoard)
-  }
+    for (const cell of cells) {
+        cell.addEventListener("click", handleClick, {once: true});
+}
 }    
-function onClick(event) {
+
+function handleClick(e) {
   const newX = document.createTextNode("X");
   const newO = document.createTextNode("O");
-  const isMarked = event.target.getAttribute("value");
-
+  const isMarked = e.target.getAttribute("value");
+  const clickedCell = e.target;
+  const currentClass = gameState.turnOrder[0];
+  const allMarked = gameState.board;
+  updateBoard(clickedCell, currentClass);
+  boardArray(cellArray);
+  if (checkWin(currentClass)) {
+    alert(`${gameState.players[0]} wins!`);
+  }
   if (gameState.turnOrder[0] == "X") {
     if (isMarked == null || isMarked == undefined) {
-      event.target.classList.add("marked", "X");
-      event.target.style.backgroundColor = "salmon";
-      event.target.setAttribute("value", "X");
-      handleTurn();
-      event.target.appendChild(newX);
+      e.target.classList.add("marked", "X");
+      e.target.style.backgroundColor = "salmon";
+      e.target.setAttribute("value", "X");
+      swapTurn();
+      e.target.appendChild(newX);
       console.log(
-        `The value of this cell is: ${event.target.getAttribute("value")}!`
+        `The value of this cell is: ${e.target.getAttribute("value")}!`
       );
     } else {
       alert("You can't do that!");
     }
   } else if (isMarked == null || isMarked == undefined) {
-    event.target.classList.add("marked", "O");
-    event.target.style.backgroundColor = "green";
-    handleTurn();
-    event.target.setAttribute("value", "O");
-    event.target.appendChild(newO);
+    e.target.classList.add("marked", "O");
+    e.target.style.backgroundColor = "green";
+    swapTurn();
+    e.target.setAttribute("value", "O");
+    e.target.appendChild(newO);
     console.log(
-      `The value of this cell is: ${event.target.getAttribute("value")}!`
+      `The value of this cell is: ${e.target.getAttribute("value")}!`
     );
   } else {
     alert("You can't do that!");
   }
 }
-function updateBoard(event) {
-    for (let i = 0; i < gameState.board.length; i++) {
-        for (let j = 0; j < gameState.board[i].length; j++ ){
-            if (gameState.board[i][j] = null) {
-                gameState.board[i][j].unshift("changed");
+
+function updateBoard(clickedCell, currentClass) {
+   clickedCell.classList.add(currentClass);
+   return cellArray;
+}
+
+function boardArray(cellArray) {
+    gameState.board = cellArray;
+   return gameState.board;
+}
+
+
+// Loop through all arrays in WINNING_BOARDS, checking whether each cell has currentClass (X or O)
+// if every cell in at least one of the winning arrays has currentClass, then return true
+function checkWin(currentClass) {
+    //use some() method on WINNING_BOARDS, passing function boardCheck as an argument.
+    // if return value is true, then there is at least one winning combination on the board
+    return WINNING_BOARDS.some(boardCheck => {
+        //boardCheck function runs a function on every winning combo in WINNING_BOARDS to test if 
+        //all the cells' classList contains the currentClass
+        return boardCheck.every(index => {
+            //if the classList of all the cells contains currentClass 
+            if (cells[index].classList.contains(currentClass)) {
+                return true;
+            } else{
+                return false;
             }
-        }
-    }
+        })
+    })
+}
+
+
+
+// function indexCheck() {
+//     if (cells[index].classList.contains(allMarked)){
+//         return true;
+//     } else {
+//         return false;
+//     }
+// }
+// // returns boolean value; true = board is filled in, false = board not fully filled in 
+// function boardCheck(indexCheck) { 
+// return boardCheck.every(index => { 
+//     return cells[index].classList.contains(allMarked);
+// })
+// }
+
+
+
+
+
+//considerations:
+
+// const swapTurn = (array, index1, index2) => {
+//     [gameState.turnOrder[0], gameState.turnOrder[1]] = [gameState.turnOrder[1], gameState.turnOrder[0]];
+// };
+// swapTurn(gameState.turnOrder, 0, 1);
+
+    // for (const element of gameState.board) {
+    //     for (let j = 0; j < element.length; j++ ){
+    //         if (element[j] = null) {
+    //             element[j].unshift("changed");
+    //         }
+    //     }
+    // }
 //   for (let j = 0; j < gameState.board.length; j++) {
 //       let boardCell = gameState.board[j];
-//       boardCell[j] = event.target.getAttribute("value");
+//       boardCell[j] = e.target.getAttribute("value");
 //       console.log(boardCell[j]);
 //   }
   
-}
  //end of big ol' for loop, remember to refine this later!
   
 
@@ -314,7 +357,7 @@ reset button
 // const messages = document.querySelector('h2');
 
 // /*-_-_-_-_-_-event listeners-_-_-_-_-_-*/
-// document.getElementById('board').addEventListener('click', handleTurn);
+// document.getElementById('board').addEventListener('click', swapTurn);
 
 
 
@@ -339,9 +382,9 @@ reset button
 // messages.textContent = `It's ${turn}'s turn!`;
 // };
 
-// function handleTurn(event) {
+// function swapTurn(event) {
 //     let idx = cells.findIndex(function(cell) {
-//         return cell === event.target;
+//         return cell === e.target;
 //     });
 //     board[idx] = turn;
 
