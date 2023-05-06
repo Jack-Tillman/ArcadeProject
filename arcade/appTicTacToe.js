@@ -189,12 +189,13 @@ function handleClick(e) {
   const isMarked = e.target.getAttribute("value");
   const clickedCell = e.target;
   const currentClass = gameState.turnOrder[0];
-  const allMarked = gameState.board;
   updateBoard(clickedCell, currentClass);
   boardArray(cellArray);
   if (checkWin(currentClass)) {
-    alert(`${gameState.players[0]} wins!`);
-  }
+    endGame(false);
+  } else if (isDraw()) {
+    endGame(true);
+  } else {
   if (gameState.turnOrder[0] == "X") {
     if (isMarked == null || isMarked == undefined) {
       e.target.classList.add("marked", "X");
@@ -221,6 +222,7 @@ function handleClick(e) {
     alert("You can't do that!");
   }
 }
+};
 
 function updateBoard(clickedCell, currentClass) {
    clickedCell.classList.add(currentClass);
@@ -236,22 +238,51 @@ function boardArray(cellArray) {
 // Loop through all arrays in WINNING_BOARDS, checking whether each cell has currentClass (X or O)
 // if every cell in at least one of the winning arrays has currentClass, then return true
 function checkWin(currentClass) {
-    //use some() method on WINNING_BOARDS, passing function boardCheck as an argument.
-    // if return value is true, then there is at least one winning combination on the board
-    return WINNING_BOARDS.some(boardCheck => {
-        //boardCheck function runs a function on every winning combo in WINNING_BOARDS to test if 
-        //all the cells' classList contains the currentClass
-        return boardCheck.every(index => {
-            //if the classList of all the cells contains currentClass 
-            if (cells[index].classList.contains(currentClass)) {
-                return true;
-            } else{
-                return false;
+    // Loop over all winning board combos 
+    for (let i = 0; i < WINNING_BOARDS.length; i++) {
+        //store each winning combo in boardCheck
+        const boardCheck = WINNING_BOARDS[i];
+        // Loop over every index in the current winning board
+        let allIndexesMatch = true;
+        for (let j = 0; j < boardCheck.length; j++) {
+            let index = boardCheck[j];
+            // Check if the cell at the current index has the current class
+            if (!cells[index].classList.contains(currentClass)) {
+                allIndexesMatch = false;
+                break;
             }
-        })
-    })
+        }
+        if (allIndexesMatch) {
+            return true;
+        }
+    }
+    // return false if none of the WINNING_BOARD combos have currentClass as a class for all 3 cells in the combo
+    return false;
 }
 
+function endGame(draw) {
+    if (draw) {
+        alert("Draw!");//update winningMessage page to indicate it's a draw
+    } else {
+        alert(`${gameState.players[0]} won!`);//update winningMessage page to reflect who won 
+    }
+    //add class of 'show' to winningMessage
+}
+
+function isDraw() {
+    let cellsAllMarked = true;
+    for (let i = 0; i < cellArray.length; i++) {
+        let cells = cellArray[i];
+        if (!cells.classList.contains('X') && !cells.classList.contains('O')) {
+            cellsAllMarked = false;
+            break;
+        }
+    }
+    return cellsAllMarked;
+}
+    // return cellArray.every(cells => {
+    //     return cells.classList.contains('X') || cells.classList.contains('O');
+    // })
 
 
 // function indexCheck() {
