@@ -95,6 +95,19 @@ function buildInitialState() {
     getUsers();
     getFirstTurn();
     turnDisplay();
+
+    for (const cell of cells) {
+        //remove any value attributes, text nodes, and listeners from previous game
+        cell.removeAttribute("value");
+        cell.classList.remove("X");
+        cell.classList.remove("O");
+        cell.removeEventListener("click", handleClick);
+        cell.addEventListener("click", handleClick, {once: true});
+        while (cell.firstChild) {
+            cell.removeChild(cell.firstChild);
+        }
+    }
+    resetBtn.addEventListener("click", resetButton);
 }
 
 // helper functions 
@@ -192,12 +205,13 @@ function swapTurn(array, index1, index2) {
 
 
 //functions to run
-buildInitialState();
 //target all elements with "cell" class
 const cells = document.getElementsByClassName("cell");
+const resetBtn = document.getElementById('reset-button');
 //use spread syntax to create array of cell classList to use for board checking
 const cellArray = [...cells];
-onBoardClick();
+buildInitialState();
+// onBoardClick();
 
 // listeners
   // update state, maybe with another dozen or so helper functions...
@@ -212,15 +226,32 @@ on cells that have the property of filled in
 - after a move is made, and no win or tie declared, then the turns are swapped 
 */
 
-function onBoardClick() {
-    for (const cell of cells) {
-        //remove any listeners from previous game
-        cell.removeEventListener("click", handleClick);
-        cell.addEventListener("click", handleClick, {once: true});
-}
-}    
+function resetButton() {
+    let resetConfirmation = confirm("Are you sure you want to restart the game?", '');
+    if (resetConfirmation) {
+        buildInitialState();
+        // for (let cell of cells){
+        //     cell.removeAttribute("value");
+            // cell.classList.remove("X");
+            // cell.classList.remove("O");
+        //     cell.addEventListener("click", handleClick);
+        //     while (cell.firstChild) {
+        //         cell.removeChild(cell.firstChild);
+        //     }
+        // }
+    }
+};
 
+// function onBoardClick() {
+//     // for (const cell of cells) {
+//     //     //remove any listeners from previous game
+//     //     cell.removeEventListener("click", handleClick);
+//     //     cell.addEventListener("click", handleClick, {once: true});
+//     // }
+//     // resetBtn.addEventListener("click", resetButton);
+// }    
 
+//current attempt at computer play is that I check to see if the next player will be Computer; if so, pass computerMove
 function handleClick(e) {
   const currentClass = gameState.turnOrder[0];
   const nextPlayer = gameState.players[1];
