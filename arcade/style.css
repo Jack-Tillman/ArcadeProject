@@ -1,13 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Darumadrop+One&family=IBM+Plex+Sans&family=Poppins&display=swap');
 * { 
     margin:0;
     padding:0;
     box-sizing: border-box; 
     text-align: center;
-    font-family:Arial, Helvetica, sans-serif;
+    font-family:"Darumadrop One", "Poppins", "Bebas Neue",serif;
 }
 
 body {
     background-color: rgb(214, 238, 240);   
+    background-image: url('images_and_assets/arcadecarpet2.png');
 }
 
 header {
@@ -17,7 +19,7 @@ header {
     margin:0px;
     display:flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: center; 
 }
 
 header .header-left {
@@ -58,23 +60,42 @@ main > .game-container {
     gap:3rem;
     width:40rem;
     margin:auto;
-    padding:0.25rem;
+    padding:0.5rem;
     border:5px ridge black;
+    box-shadow: 3px 3px rgb(37, 28, 161), -0.5em 0 .4em rgb(30, 204, 44);
     border-radius:5%;
+    background-color: rgba(2, 0, 3, 0.975);
 }
 
 main > .welcome-container {
     padding:0.5rem;
+    width:50vw;
+    margin:1rem auto;
+    background-color: rgba(255, 250, 251, 0.975);
+    border-radius:10%;
+    font-size: 30px;
+    text-shadow: 3px 3px 3px #ac92ca;
+    box-shadow: 3px 3px rgb(30, 204, 44), -0.5em 0 .4em rgb(37, 28, 161);
 }
 
 main > .welcome-container > * {
-    padding:1rem;
+    font-family:"Darumadrop One", serif;
+    color:black;
+    padding:0.5rem;  
+}
+
+.arcade-name {  
+    margin:auto;
+}
+
+.welcome-text {
+    margin:auto;
 }
 
 .game {
     border:0.35rem solid rgb(128, 229, 128);
     padding:0.5rem;
-    border-radius:15%;
+    border-radius:90%;
     overflow:hidden;
 }
 
