@@ -9,7 +9,7 @@
 
 body {
     background-color: #cccccc;
-  background-image: radial-gradient(rgb(255, 255, 255), rgb(0, 0, 0));
+    background-image: radial-gradient(rgb(178, 243, 178), rgb(80, 109, 236));;
 }
 
 header {
@@ -72,7 +72,7 @@ main > .welcome-container {
     margin:1rem auto;
     background-color: rgba(255, 250, 251, 0.975);
     border-radius:10%;
-    font-size: 30px;
+    font-size: 1.5rem;
     text-shadow: 3px 3px 3px #d6d3da;
     box-shadow: 3px 3px rgb(37, 28, 161), -0.25em 0 .4em rgb(255, 0, 106);
 }
@@ -104,21 +104,23 @@ main > .welcome-container > * {
 }
 
 
-/* media queries rough draft
+/* media queries rough draft */
 @media screen and (max-width:500px) {
     header {
         flex-flow:column nowrap;
-        padding:0rem 0rem;
         justify-content: center;
-    }
-
-    header .header-left {
-        display:block;
+        padding:0;
+        margin:0 auto;
     }
 
     header a { 
-        margin:0;
-        padding:0;
+        display:flex;
+        flex-flow:column nowrap;
+        margin:0.5rem 1rem;
+        padding:1rem;
+        font-size: 2.5rem;
+        border-bottom: 2.5px solid grey;
+        
     }
 
     main {
@@ -129,5 +131,9 @@ main > .welcome-container > * {
         flex-flow:column nowrap;
     }
 
+    main > .welcome-container {
+        width:90vw;
+        margin:1rem auto;
+        font-size: 1.5rem;
+    }
 }
-*/

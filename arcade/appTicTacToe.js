@@ -32,10 +32,6 @@ TIE
 If a move results in a tie, players are notified 
     - Similar result as a win, except the text will change from "Player X won!" to "It's a draw!"
 
-
-
-
-
 User Interface components
 - Title of game 
 - 3 x 3 grid 
@@ -57,15 +53,6 @@ Game flow components
     * else, stop the game 
 - Update the UI to reflect changes to game state
 - Repeat until a winner or a tie is reached
-
-
-
-
-**TO DO
-- 'null' and 'undefined' check for getUsers() 
-- incorporate swapTurn array syntax into swapTurn
-- for the first turn, show whose move it is 
-
 */
 
 'use strict';
@@ -107,7 +94,9 @@ function buildInitialState() {
             cell.removeChild(cell.firstChild);
         }
     }
-    resetBtn.addEventListener("click", resetButton);
+    resetBtn.addEventListener("click", buildInitialState);
+    gameoverMessageElement.classList.remove('show')
+    gameoverMessageTextElement.textContent = '';
 }
 
 // helper functions 
@@ -206,9 +195,12 @@ function turnDisplay() {
     currentTurnDisplay.textContent = currentTurnContent;
 }
 
-//functions to run
+//functions to run and global variables 
+
 //target all elements with "cell" class
 const cells = document.getElementsByClassName("cell");
+const gameoverMessageElement = document.getElementById("gameoverMessage");
+const gameoverMessageTextElement = document.getElementById("gameover-message-text");
 const resetBtn = document.getElementById('reset-button');
 //use spread syntax to create array of cell classList to use for board checking
 const cellArray = [...cells];
@@ -228,34 +220,11 @@ on cells that have the property of filled in
 - after a move is made, and no win or tie declared, then the turns are swapped 
 */
 
-function resetButton() {
-    let resetConfirmation = confirm("Are you sure you want to restart the game?", '');
-    if (resetConfirmation) {
-        buildInitialState();
-    }
-};
-
-// function onBoardClick() {
-//     // for (const cell of cells) {
-//     //     //remove any listeners from previous game
-//     //     cell.removeEventListener("click", handleClick);
-//     //     cell.addEventListener("click", handleClick, {once: true});
-//     // }
-//     // resetBtn.addEventListener("click", resetButton);
-// }    
-
 //current attempt at computer play is that I check to see if the next player will be Computer; if so, pass computerMove
 function handleClick(e) {
   const currentClass = gameState.turnOrder[0];
-//   const currentPlayer = gameState.players[0];
   const isMarked = e.target.getAttribute("value");
   const clickedCell = e.target;
-//   const clickedCell = computerCheck() ? computerMove() : e.target;
-//   if (currentPlayer === "Computer"){
-//     updateBoard(computerMove(), currentClass);
-//   } else {
-//       updateBoard(clickedCell, currentClass);
-//   }
 
   updateBoard(clickedCell,currentClass);
   renderState(cellArray);
@@ -272,11 +241,6 @@ function handleClick(e) {
       markCell(clickedCell, currentClass);
       swapTurn(gameState.turnOrder, 0, 1);
       turnDisplay();
-    //   computerMove();
-    //   swapTurn(gameState.turnOrder, 0, 1);
-    //   turnDisplay();
-    //   turnDisplay();
-    //   swapTurn(gameState.turnOrder, 0, 1);
     } else {
       alert("You can't do that!");
     }
@@ -293,23 +257,18 @@ function markCell(clickedCell, currentClass) {
   clickedCell.appendChild(newValue);
 };
 
-function computerCheck() {
-    return gameState.players[0] === "Computer" ? true : false;
-}
-
 // Loop through all arrays in WINNING_BOARDS, checking whether each cell has currentClass (X or O)
 // if every cell in at least one of the winning arrays has currentClass, then return true
 function checkWin(currentClass) {
     // Loop over all winning board combos 
-    for (let i = 0; i < WINNING_BOARDS.length; i++) {
-        //boardCheck = every winning board
-        const boardCheck = WINNING_BOARDS[i];
+    for (const boardCheck of WINNING_BOARDS) {
         // Loop over every index in the current winning board
         let allIndexesMatch = true;
-        for (let j = 0; j < boardCheck.length; j++) {
-            let index = boardCheck[j];
+        //loop over every index in the current potential 3 cell winning combo (nested array within the primary board array)
+        for (const index of boardCheck) {
             // Check if the cell at the current index has the current class
             if (!cells[index].classList.contains(currentClass)) {
+                //if cells don't all match, return false to be passed in handleClick() and break outta there
                 allIndexesMatch = false;
                 break;
             }
@@ -324,13 +283,11 @@ function checkWin(currentClass) {
 
 function endGame(draw) {
     if (draw) {
-        alert("Draw!");
-        //**update winningMessage page to indicate it's a draw
-        
+        gameoverMessageTextElement.textContent = `It's a draw!`;
     } else {
-        alert(`${gameState.players[0]} won!`);//update winningMessage page to reflect who won 
+        gameoverMessageTextElement.textContent = `${gameState.players[0]} won!`;
     }
-    //**add class of 'show' to winningMessage
+    gameoverMessageElement.classList.add('show')
     for (const cell of cells) {
         cell.removeEventListener("click", handleClick);
     }
@@ -338,7 +295,7 @@ function endGame(draw) {
 
 function isDraw() {
     let cellsAllMarked = true;
-    for (let cells of cellArray) {
+    for (const cells of cellArray) {
         if (!cells.classList.contains('X') && !cells.classList.contains('O')) {
             cellsAllMarked = false;
             break;
@@ -347,6 +304,13 @@ function isDraw() {
     return cellsAllMarked;
 }
 
+//not used in current iteration of program due to inability to complete computer play functionality 
+function computerCheck() {
+    return gameState.players[0] === "Computer" ? true : false;
+}
+
+//this function is incomplete but I intended to simulate an automated click on a random cell based on an array of all cells that are not clicked yet 
+//suffice to say, this did not pan out as I hoped
 function computerMove(currentClass) {
     let potentialCells= [];
     for (let i = 0; i < cells.length; i++) {
@@ -358,7 +322,6 @@ function computerMove(currentClass) {
         }
     }
     console.log(potentialCells);
-    
     const randomCellIndex = Math.floor(Math.random() * potentialCells.length);
     const randomlyChosenCell = potentialCells[randomCellIndex];
     const computerValue = document.createTextNode(gameState.turnOrder[0]);
@@ -366,6 +329,45 @@ function computerMove(currentClass) {
     randomlyChosenCell.setAttribute("value", currentClass);
     randomlyChosenCell.appendChild(computerValue);
 }
+
+// This is the last attempt I mustered for creating a different version of handleClick(e) to be used to simulate the computer clicking the cell
+
+// function handleClick(e) {
+//     const currentClass = gameState.turnOrder[0];
+//     const currentPlayer = gameState.players[0];
+//     const isMarked = e.target.getAttribute("value");
+//     const clickedCell = computerCheck() ? computerMove() : e.target;
+//     if (currentPlayer === "Computer"){
+//       updateBoard(computerMove(), currentClass);
+//     } else {
+//         updateBoard(clickedCell, currentClass);
+//     }
+  
+//     updateBoard(clickedCell,currentClass);
+//     renderState(cellArray);
+    
+//     if (checkWin(currentClass)) {
+//       //if the next move will result in a player winning, pass false into endGame to avoid draw condition
+//       endGame(false);
+//     } else if (isDraw()) {
+//       //if next move results in a draw, pass true through endGame() to attain draw condition
+//       endGame(true);
+//     } else {
+//       //if the next move will neither draw nor cause a win, then the mark can be made, and turn is swapped
+//       if (!isMarked) {
+//         markCell(clickedCell, currentClass);
+//         swapTurn(gameState.turnOrder, 0, 1);
+//         turnDisplay();
+//         computerMove();
+//         swapTurn(gameState.turnOrder, 0, 1);
+//         turnDisplay();
+//       } else {
+//         alert("You can't do that!");
+//       }
+//     }
+//   };
+
+//first attempt at computerMove function (kept for posterity's sake, i suppose)
 // function computerMark(currentClass) {
 //     currentClass = gameState.turnOrder[0];
 //     let potentialCells= [];
@@ -382,25 +384,3 @@ function computerMove(currentClass) {
 //    clickedCell = potentialCells[randomCellIndex].classList.add(currentClass);
 //     return clickedCell;
 // }
-
-
-
-
-
-
-
-
-// function indexCheck() {
-//     if (cells[index].classList.contains(allMarked)){
-//         return true;
-//     } else {
-//         return false;
-//     }
-// }
-// // returns boolean value; true = board is filled in, false = board not fully filled in 
-// function boardCheck(indexCheck) { 
-// return boardCheck.every(index => { 
-//     return cells[index].classList.contains(allMarked);
-// })
-// }
-

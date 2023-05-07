@@ -1,7 +1,13 @@
+body {
+    background-color: #cccccc;
+    background-image: radial-gradient(rgb(235, 178, 243), rgb(80, 109, 236));
+}
+
 h2 {
     margin:0 auto;
-    font-size:2rem;
+    font-size:3rem;
     margin:0.625rem 0.625rem 3rem 0.625rem;
+    text-shadow: 3px 3px 3px #d6d3da;
 }
 
 .flex-container { 
@@ -29,7 +35,7 @@ h2 {
     height:10.9375rem;
     width:10.9375rem;
     background-color: aliceblue;
-    font-size:3rem;
+    font-size:4rem;
 }
 
 .cell.X,
@@ -38,23 +44,37 @@ h2 {
     height:10.9375rem;
     width:10.9375rem;
     cursor: not-allowed;
+    text-shadow: 3px 3px 3px #7553a1;
 }
 
-#reset-button { 
+.reset-button { 
     text-align: center;
     font-size:1.25rem;
     border: 1px solid black;
     height: 3.4375rem;
     width:6.25rem;
     margin:0.625rem;
+    border-radius:50%;
+}
+
+.reset-button:hover { 
+    box-shadow: 3px 3px rgb(37, 28, 161), -0.25em 0 .4em rgb(255, 0, 106);
+}
+
+.reset-button:active { 
+    color:white;
+    background-color: black;
+    transform: translateY(4px);
 }
 
 .cell.X {
-    background-color: greenyellow;
+    background-color: rgb(219, 212, 231);
+    color:rgb(120, 113, 226);
 }
 
 .cell.O {
-    background-color: violet;
+    background-color: rgb(219, 212, 231);
+    color:rgb(247, 86, 153);
 }
 
 /*excess border removal*/
@@ -75,4 +95,49 @@ h2 {
 .cell:nth-child(7),
 .cell:nth-child(8) {
     border-bottom: none;
+}
+
+.winning-message { 
+    display:none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color:white;
+    font-size:6rem;
+}
+
+.show {  
+    display:flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color:white;
+    font-size:6rem;
+}
+
+/* Media Queries */
+@media screen and (max-width:500px) {
+    h1 {
+        display:flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    main {
+        flex-flow:row wrap;
+        justify-content: center;
+        align-items: center;
+    }
 }
