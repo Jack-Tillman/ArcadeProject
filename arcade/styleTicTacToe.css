@@ -49,6 +49,14 @@ h2 {
     margin:0.625rem;
 }
 
+.cell.X {
+    background-color: greenyellow;
+}
+
+.cell.O {
+    background-color: violet;
+}
+
 /*excess border removal*/
 
 .cell:nth-child(-n + 3) {

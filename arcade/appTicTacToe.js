@@ -94,12 +94,8 @@ function buildInitialState() {
     versusComputer();
     getUsers();
     getFirstTurn();
+    turnDisplay();
 }
-
-// render
-function renderState() {
-}
-
 
 // helper functions 
 function versusComputer() { 
@@ -110,12 +106,6 @@ function versusComputer() {
     }
     return gameState;
 };
-
-/*
-computerPlay()
-if the name in 
-*/
-
 
 function getUsers() {
     if (gameState.versusComputer === true) {
@@ -133,6 +123,10 @@ function getUsers() {
 
 //randomize the order of who takes first turn
 function getFirstTurn() {
+    if (gameState.versusComputer === true) {
+        gameState.turnOrder = ['X', 'O'];
+        alert(`${gameState.players[0]} will play X, ${gameState.players[1]} will play O.`);
+    }else {
     const randomOrder = Math.floor(Math.random() * 100);
     if (randomOrder > 50){
         gameState.turnOrder = ['X', 'O'];
@@ -141,9 +135,49 @@ function getFirstTurn() {
         gameState.turnOrder = ['O', 'X'];
         alert(`${gameState.players[0]} will play O, ${gameState.players[1]} will play X.`);
     }
+    }
     return gameState.turnOrder;
 };
 
+// render
+function renderState(cellArray) {
+    gameState.board = cellArray;
+    return gameState.board;
+}
+
+//adds class of current player to clicked cell
+function updateBoard(clickedCell, currentClass) {
+    clickedCell.classList.add(currentClass);
+    return cellArray;
+ }
+
+// function computerMove() {
+//     if (gameState.players[0] === "Computer"){
+//     }
+//     let potentialCells= [];
+//     for (let i = 0; i < cells.length; i++) {
+//         let currentCell = cells[i];
+//         if (currentCell.classList.contains("X") || currentCell.classList.contains("O")) {
+//             continue;
+//         }else {
+//             potentialCells.unshift(currentCell);
+//         }
+//     }
+//     console.log(potentialCells);
+//     const randomCellIndex = Math.floor(Math.random() * potentialCells.length);
+//     potentialCells[randomCellIndex].classList.add(gameState.turnOrder[0]);
+//     potentialCells.classList.add(gameState.turnorder[0]);
+//     potentialCells.style.backgroundColor = backgroundColor;
+//     potentialCells.setAttribute("value", gameState.turnorder[0]);
+//     const computerValue = document.createTextNode(gameState.turnOrder[0]);
+//     potentialCells.appendChild(computerValue);
+// }
+
+function turnDisplay() {
+const currentTurnContent = `It is ${gameState.players[0]}'s turn!`;
+const currentTurnDisplay = document.getElementById('currentTurnDisplay');
+currentTurnDisplay.textContent = currentTurnContent;
+}
 
 function swapTurn(array, index1, index2) {
     let turnOrder = gameState.turnOrder;
@@ -152,9 +186,7 @@ function swapTurn(array, index1, index2) {
     [turnOrder[0], turnOrder[1]] = [turnOrder[1], turnOrder[0]];
     [players[0], players[1]] = [players[1], players[0]];
     //update the rendered display so players see whose turn it is 
-    const currentTurnContent = `It is ${players[0]}'s turn!`;
-    const currentTurnDisplay = document.getElementById('currentTurnDisplay');
-    currentTurnDisplay.textContent = currentTurnContent;
+    //move to renderState perhaps
     return gameState;
 };
 
@@ -182,20 +214,26 @@ on cells that have the property of filled in
 
 function onBoardClick() {
     for (const cell of cells) {
+        //remove any listeners from previous game
+        cell.removeEventListener("click", handleClick);
         cell.addEventListener("click", handleClick, {once: true});
 }
 }    
 
 
 function handleClick(e) {
-  const currentPlayersClass = gameState.turnOrder[0];
+  const currentClass = gameState.turnOrder[0];
+  const nextPlayer = gameState.players[1];
   const isMarked = e.target.getAttribute("value");
-  const clickedCell = e.target;
-
-  updateBoard(clickedCell, currentPlayersClass);
-  boardArray(cellArray);
+  const clickedCell = computerCheck() ? computerMove() : e.target;
+  if (nextPlayer === "Computer"){
+    updateBoard(clickedCell, currentClass);
+  } else {
+      updateBoard(clickedCell, currentClass);
+  }
+  renderState(cellArray);
   
-  if (checkWin(currentPlayersClass)) {
+  if (checkWin(currentClass)) {
     //if the next move will result in a player winning, pass false into endGame to avoid draw condition
     endGame(false);
   } else if (isDraw()) {
@@ -204,8 +242,9 @@ function handleClick(e) {
   } else {
     //if the next move will neither draw nor cause a win, then the mark can be made, and turn is swapped
     if (!isMarked) {
-      markCell(clickedCell, currentPlayersClass);
+      markCell(clickedCell, currentClass);
       swapTurn(gameState.turnOrder, 0, 1);
+      turnDisplay();
     } else {
       alert("You can't do that!");
     }
@@ -213,31 +252,42 @@ function handleClick(e) {
 };
 
 //marks a cell based on which cell was clicked and the class of the player clicking 
-function markCell(clickedCell, currentPlayersClass) {
-  const newValue = document.createTextNode(currentPlayersClass);
-  const classToAdd = `${currentPlayersClass}`;
-  const backgroundColor = currentPlayersClass === "X" ? "salmon" : "green";
+function markCell(clickedCell, currentClass) {
+  const newValue = document.createTextNode(currentClass);
+  const classToAdd = `${currentClass}`;
     //add current class of player and set attribute to same value so gameState.board can be updated to mirror the game state
   clickedCell.classList.add(classToAdd);
-  clickedCell.style.backgroundColor = backgroundColor;
-  clickedCell.setAttribute("value", currentPlayersClass);
+  clickedCell.setAttribute("value", currentClass);
   clickedCell.appendChild(newValue);
 };
 
-function updateBoard(clickedCell, currentPlayersClass) {
-   clickedCell.classList.add(currentPlayersClass);
-   return cellArray;
+// function computerMark(currentClass) {
+//     currentClass = gameState.turnOrder[0];
+//     let potentialCells= [];
+//     for (let i = 0; i < cells.length; i++) {
+//         let currentCell = cells[i];
+//         if (currentCell.classList.contains("X") || currentCell.classList.contains("O")) {
+//             continue;
+//         }else {
+//             potentialCells.unshift(currentCell);
+//         }
+//     }
+//     console.log(potentialCells);
+//     const randomCellIndex = Math.floor(Math.random() * potentialCells.length);
+//    clickedCell = potentialCells[randomCellIndex].classList.add(currentClass);
+//     return clickedCell;
+// }
+
+function computerCheck() {
+    return gameState.players[0] === "Computer" ? true : false;
 }
 
-function boardArray(cellArray) {
-    gameState.board = cellArray;
-   return gameState.board;
-}
 
 
-// Loop through all arrays in WINNING_BOARDS, checking whether each cell has currentPlayersClass (X or O)
-// if every cell in at least one of the winning arrays has currentPlayersClass, then return true
-function checkWin(currentPlayersClass) {
+
+// Loop through all arrays in WINNING_BOARDS, checking whether each cell has currentClass (X or O)
+// if every cell in at least one of the winning arrays has currentClass, then return true
+function checkWin(currentClass) {
     // Loop over all winning board combos 
     for (let i = 0; i < WINNING_BOARDS.length; i++) {
         //store each winning combo in boardCheck
@@ -247,7 +297,7 @@ function checkWin(currentPlayersClass) {
         for (let j = 0; j < boardCheck.length; j++) {
             let index = boardCheck[j];
             // Check if the cell at the current index has the current class
-            if (!cells[index].classList.contains(currentPlayersClass)) {
+            if (!cells[index].classList.contains(currentClass)) {
                 allIndexesMatch = false;
                 break;
             }
@@ -256,17 +306,22 @@ function checkWin(currentPlayersClass) {
             return true;
         }
     }
-    // return false if none of the WINNING_BOARD combos have currentPlayersClass as a class for all 3 cells in the combo
+    // return false if none of the WINNING_BOARD combos have currentClass as a class for all 3 cells in the combo
     return false;
 }
 
 function endGame(draw) {
     if (draw) {
-        alert("Draw!");//update winningMessage page to indicate it's a draw
+        alert("Draw!");
+        //**update winningMessage page to indicate it's a draw
+        
     } else {
         alert(`${gameState.players[0]} won!`);//update winningMessage page to reflect who won 
     }
-    //add class of 'show' to winningMessage
+    //**add class of 'show' to winningMessage
+    for (const cell of cells) {
+        cell.removeEventListener("click", handleClick);
+    }
 }
 
 function isDraw() {
@@ -280,6 +335,8 @@ function isDraw() {
     }
     return cellsAllMarked;
 }
+
+
     // return cellArray.every(cells => {
     //     return cells.classList.contains('X') || cells.classList.contains('O');
     // })
@@ -301,31 +358,6 @@ function isDraw() {
 
 
 
-
-
-//considerations:
-
-// const swapTurn = (array, index1, index2) => {
-//     [gameState.turnOrder[0], gameState.turnOrder[1]] = [gameState.turnOrder[1], gameState.turnOrder[0]];
-// };
-// swapTurn(gameState.turnOrder, 0, 1);
-
-    // for (const element of gameState.board) {
-    //     for (let j = 0; j < element.length; j++ ){
-    //         if (element[j] = null) {
-    //             element[j].unshift("changed");
-    //         }
-    //     }
-    // }
-//   for (let j = 0; j < gameState.board.length; j++) {
-//       let boardCell = gameState.board[j];
-//       boardCell[j] = e.target.getAttribute("value");
-//       console.log(boardCell[j]);
-//   }
-  
- //end of big ol' for loop, remember to refine this later!
-  
-
 /*05/05 5:50 pm update:
 tired
 Done: on click, the cell is given an attribute for which player's turn it is based on the 
@@ -337,92 +369,3 @@ random function for computer player
 check top to-do for refinements 
 reset button 
 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*-_-_-_-_-_-constants-_-_-_-_-_-*/
-
-// let board = [
-//     null, null, null,
-//     null, null, null,
-//     null, null, null
-//   ];
-
-// let turn = "X";
-
-// /*-_-_-_-_-_-States-_-_-_-_-_-*/
-
-
-
-
-// /*-_-_-_-_-_-element references-_-_-_-_-_-*/
-// //array of all #board div elements, used by renderState()
-// const cells = Array.from(document.querySelectorAll('#board div'));
-// //access h2 element to be changed in renderState()
-// const messages = document.querySelector('h2');
-
-// /*-_-_-_-_-_-event listeners-_-_-_-_-_-*/
-// document.getElementById('board').addEventListener('click', swapTurn);
-
-
-
-// /*-_-_-_-_-_-functions-_-_-_-_-_-*/
-
-// function init() {
-//     board = [
-//     null, null, null,
-//     null, null, null,
-//     null, null, null
-//   ];
-//   renderState();
-// }
-
-// init();
-
-// //function will iterate over the board array and insert a mark into marked 'div' 
-// function renderState() {
-// board.forEach((mark, index) => {
-//     cells[index].textContent = mark;
-// });
-// messages.textContent = `It's ${turn}'s turn!`;
-// };
-
-// function swapTurn(event) {
-//     let idx = cells.findIndex(function(cell) {
-//         return cell === e.target;
-//     });
-//     board[idx] = turn;
-
-//     if (turn === 'X') {
-//         turn = 'O'
-//     } else {
-//         turn = 'X'
-//     };
-//     renderState();
-//     }
