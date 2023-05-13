@@ -114,7 +114,6 @@ function versusComputer() {
     } else {
         gameState.versusComputer = false;
     }
-    return gameState;
 };
 
 let playerOneName = null;
@@ -152,7 +151,6 @@ function getUsers() {
         }
         }
     }
-    return gameState;
 };
 
 //randomize the order of who takes first turn
@@ -242,9 +240,11 @@ function handleClick(e) {
   
   if (checkWin(currentClass)) {
     //if the next move will result in a player winning, pass false into endGame to avoid draw condition
+    markCell(clickedCell, currentClass);
     endGame(false);
   } else if (isDraw()) {
     //if next move results in a draw, pass true through endGame() to attain draw condition
+    markCell(clickedCell, currentClass);
     endGame(true);
   } else {
     //if the next move will neither draw nor cause a win, then the mark can be made, and turn is swapped
@@ -323,7 +323,7 @@ function computerCheck() {
 //this function is incomplete but I intended to simulate an automated click on a random cell based on an array of all cells that are not clicked yet 
 //suffice to say, this did not pan out as I hoped
 function computerMove(currentClass) {
-    let potentialCells= [];
+    let potentialCells = [];
     for (let i = 0; i < cells.length; i++) {
         let currentCell = cells[i];
         if (currentCell.classList.contains("X") || currentCell.classList.contains("O")) {
