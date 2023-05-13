@@ -234,10 +234,8 @@ function handleClick(e) {
   const currentClass = gameState.turnOrder[0];
   const isMarked = e.target.getAttribute("value");
   const clickedCell = e.target;
-
   updateBoard(clickedCell,currentClass);
   renderState(cellArray);
-  
   if (checkWin(currentClass)) {
     //if the next move will result in a player winning, pass false into endGame to avoid draw condition
     markCell(clickedCell, currentClass);
@@ -248,12 +246,13 @@ function handleClick(e) {
     endGame(true);
   } else {
     //if the next move will neither draw nor cause a win, then the mark can be made, and turn is swapped
-    if (!isMarked) {
+    if (isMarked) {
+      alert("You can't do that!");
+    } else {
       markCell(clickedCell, currentClass);
       swapTurn(gameState.turnOrder, 0, 1);
       turnDisplay();
-    } else {
-      alert("You can't do that!");
+      computerCheck();
     }
   }
 };
@@ -317,11 +316,13 @@ function isDraw() {
 
 //not used in current iteration of program due to inability to complete computer play functionality 
 function computerCheck() {
-    return gameState.players[0] === "Computer" ? true : false;
+    if (gameState.players[0] === "Computer" && gameState.versusComputer === true) {
+        console.log("computerCheck worked");
+        computerMove(gameState.turnOrder[0]);
+    }
 }
 
-//this function is incomplete but I intended to simulate an automated click on a random cell based on an array of all cells that are not clicked yet 
-//suffice to say, this did not pan out as I hoped
+//simulate an automated click on a random cell based on an array of all cells that are not clicked yet 
 function computerMove(currentClass) {
     let potentialCells = [];
     for (let i = 0; i < cells.length; i++) {
@@ -332,66 +333,30 @@ function computerMove(currentClass) {
             potentialCells.unshift(currentCell);
         }
     }
-    console.log(potentialCells);
     const randomCellIndex = Math.floor(Math.random() * potentialCells.length);
     const randomlyChosenCell = potentialCells[randomCellIndex];
-    const computerValue = document.createTextNode(gameState.turnOrder[0]);
-    randomlyChosenCell.classList.add(gameState.turnOrder[0]);
+    const computerValue = document.createTextNode(currentClass);
+     updateBoard(randomlyChosenCell,currentClass);
+     renderState(cellArray);
+    
+    if (checkWin(currentClass)) {
+        //if the next move will result in a player winning, pass false into endGame to avoid draw condition
+        computerMark(randomlyChosenCell, currentClass, computerValue);
+        endGame(false);
+      } else if (isDraw()) {
+        //if next move results in a draw, pass true through endGame() to attain draw condition
+        computerMark(randomlyChosenCell, currentClass, computerValue);
+        endGame(true);
+      } else {
+        computerMark(randomlyChosenCell, currentClass, computerValue);
+        swapTurn(gameState.turnOrder, 0, 1);
+        turnDisplay();
+        }
+};
+
+function computerMark(randomlyChosenCell, currentClass, computerValue) {
+    const classToAdd = `${currentClass}`;
+    randomlyChosenCell.classList.add(classToAdd);
     randomlyChosenCell.setAttribute("value", currentClass);
     randomlyChosenCell.appendChild(computerValue);
-}
-
-// This is the last attempt I mustered for creating a different version of handleClick(e) to be used to simulate the computer clicking the cell
-
-// function handleClick(e) {
-//     const currentClass = gameState.turnOrder[0];
-//     const currentPlayer = gameState.players[0];
-//     const isMarked = e.target.getAttribute("value");
-//     const clickedCell = computerCheck() ? computerMove() : e.target;
-//     if (currentPlayer === "Computer"){
-//       updateBoard(computerMove(), currentClass);
-//     } else {
-//         updateBoard(clickedCell, currentClass);
-//     }
-  
-//     updateBoard(clickedCell,currentClass);
-//     renderState(cellArray);
-    
-//     if (checkWin(currentClass)) {
-//       //if the next move will result in a player winning, pass false into endGame to avoid draw condition
-//       endGame(false);
-//     } else if (isDraw()) {
-//       //if next move results in a draw, pass true through endGame() to attain draw condition
-//       endGame(true);
-//     } else {
-//       //if the next move will neither draw nor cause a win, then the mark can be made, and turn is swapped
-//       if (!isMarked) {
-//         markCell(clickedCell, currentClass);
-//         swapTurn(gameState.turnOrder, 0, 1);
-//         turnDisplay();
-//         computerMove();
-//         swapTurn(gameState.turnOrder, 0, 1);
-//         turnDisplay();
-//       } else {
-//         alert("You can't do that!");
-//       }
-//     }
-//   };
-
-//first attempt at computerMove function (kept for posterity's sake, i suppose)
-// function computerMark(currentClass) {
-//     currentClass = gameState.turnOrder[0];
-//     let potentialCells= [];
-//     for (let i = 0; i < cells.length; i++) {
-//         let currentCell = cells[i];
-//         if (currentCell.classList.contains("X") || currentCell.classList.contains("O")) {
-//             continue;
-//         }else {
-//             potentialCells.unshift(currentCell);
-//         }
-//     }
-//     console.log(potentialCells);
-//     const randomCellIndex = Math.floor(Math.random() * potentialCells.length);
-//    clickedCell = potentialCells[randomCellIndex].classList.add(currentClass);
-//     return clickedCell;
-// }
+};
