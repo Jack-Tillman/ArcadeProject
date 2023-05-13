@@ -89,3 +89,18 @@ Somewhere in the global scope, keep a variable that represents what you
 want the current 'state' of the game to look like 
 let gameArray = ['X', null, 'O', null, null, null, null, null, null]
 every time click on board, (check pic for more)
+
+05/13/23 Update:
+Will make some revisions before second submission: 
+Focus on the top and if time, do the bottom
+1) Display player names on screen at all times 
+- can create a section at the top of the main section that displays player names 
+2) Computer player 
+- rough version, just utilize setInterval 
+- more complex version, look into minimax algorithm or whatever it is called 
+3) replace the prompts for user names with a box that shows up before game starts 
+- Game Name 
+- Input form, placeholder="What is your name?" 
+- Button with id of submit 
+4) clean up the index main page 
+5) add cute animations around buttons when clicked or maybe just general 

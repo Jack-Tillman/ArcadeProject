@@ -78,6 +78,7 @@ function buildInitialState() {
     gameState.versusComputer = [''],
     gameState.players = ['',''],
     gameState.turnOrder = ['',''],
+    nameReset();
     versusComputer();
     getUsers();
     getFirstTurn();
@@ -100,19 +101,25 @@ function buildInitialState() {
 }
 
 // helper functions 
+
+function nameReset() {
+playerOneName = null;
+playerTwoName = null;
+};
+
 function versusComputer() { 
     if(confirm( "Would you like to play against a computer? If not, you will play against another person") == true ){
         gameState.versusComputer = true;
+        playerTwoName = "Computer";
     } else {
         gameState.versusComputer = false;
     }
     return gameState;
 };
 
+let playerOneName = null;
+let playerTwoName = null;
 function getUsers() {
-    let playerOneName = null;
-    let playerTwoName = null;
-    
     if (gameState.versusComputer) {
         while (playerOneName === null || !isNaN(playerOneName)) {
             playerOneName = prompt("What is the name of player one?", '');
@@ -193,6 +200,10 @@ function turnDisplay() {
     const currentTurnContent = `It is ${gameState.players[0]}'s turn!`;
     const currentTurnDisplay = document.getElementById('currentTurnDisplay');
     currentTurnDisplay.textContent = currentTurnContent;
+    const playerOneDisplay = document.getElementById('player-one-display');
+    playerOneDisplay.textContent = `Player 1: ${playerOneName}`;
+    const playerTwoDisplay = document.getElementById('player-two-display');
+    playerTwoDisplay.textContent = `Player 2: ${playerTwoName}`;
 }
 
 //functions to run and global variables 
