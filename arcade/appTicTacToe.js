@@ -249,7 +249,7 @@ function handleClick(e) {
     if (isMarked) {
       alert("You can't do that!");
     } else {
-      markCell(clickedCell, currentClass);
+      setTimeout(markCell(clickedCell, currentClass), 1000);
       swapTurn(gameState.turnOrder, 0, 1);
       turnDisplay();
       computerCheck();
@@ -318,7 +318,7 @@ function isDraw() {
 function computerCheck() {
     if (gameState.players[0] === "Computer" && gameState.versusComputer === true) {
         console.log("computerCheck worked");
-        computerMove(gameState.turnOrder[0]);
+        setTimeout(function(){computerMove(gameState.turnOrder[0]);}, 1000);
     }
 }
 
@@ -336,22 +336,22 @@ function computerMove(currentClass) {
     const randomCellIndex = Math.floor(Math.random() * potentialCells.length);
     const randomlyChosenCell = potentialCells[randomCellIndex];
     const computerValue = document.createTextNode(currentClass);
-     updateBoard(randomlyChosenCell,currentClass);
-     renderState(cellArray);
+    updateBoard(randomlyChosenCell,currentClass);
+    renderState(cellArray);
     
     if (checkWin(currentClass)) {
         //if the next move will result in a player winning, pass false into endGame to avoid draw condition
         computerMark(randomlyChosenCell, currentClass, computerValue);
         endGame(false);
-      } else if (isDraw()) {
+    } else if (isDraw()) {
         //if next move results in a draw, pass true through endGame() to attain draw condition
         computerMark(randomlyChosenCell, currentClass, computerValue);
         endGame(true);
-      } else {
+    } else {
         computerMark(randomlyChosenCell, currentClass, computerValue);
         swapTurn(gameState.turnOrder, 0, 1);
         turnDisplay();
-        }
+    }
 };
 
 function computerMark(randomlyChosenCell, currentClass, computerValue) {
