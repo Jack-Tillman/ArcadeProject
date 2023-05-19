@@ -92,7 +92,9 @@ main > .welcome-container > * {
 }
 
 .game {
-    padding:0.5rem;
+    width:12rem;
+    height:12rem;
+    padding:0rem;
     border-radius:100%;
     overflow:hidden;
     box-shadow: 3px 3px rgb(92, 17, 190), -0.25em 0 .3em rgb(255, 0, 106);

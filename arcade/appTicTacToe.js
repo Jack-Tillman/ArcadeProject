@@ -1,62 +1,4 @@
-/*
-Broad pseudocode:
-What is the starting state? 
-- The starting state is a 3 x 3 grid of clickable, empty cells. 
-What is needed for that? 
-- Create an object, gameState, to represent the game board itself. 
-    - gameState will hold the game board itself, the users playing, and maybe more properties
-What is the next state before the game can begin? 
-- User is prompted to enter their name 
-    - I can use the confirm() method to display a popup that enables user to confirm or deny playing against a computer ; if confirmed, then player2 is named computer and act appropriately 
-    - That name is stored in the gameState object 
-    - For each user, their name will be displayed along with a "It's [user's] turn" title above game 
-- After entering their name, they will be assigned either X or O 
-    - In gameState, the user that is in the 0 index will go, potentially randomize which player is put there 
-    - function that adds X and O as a value for the players key to the gameState object, but randomly assigns X or O in the 0 index 
-- The user will be told which piece they play as. They will be able to see which player's move it is above the game board as well. 
-
-TURNS 
-- At the start of the turn, the current player is switched, and their name is displayed on screen so they know whose turn it is  
-- When a user clicks a cell, the representation of that cell is filled in within the gameState object as well 
-    - before the mark is made, it must be validated. If gameState cell is null, then the move is valid. If not, it is invalid and player isn't able to make that move. Utilize click disabling for this
-        -valid moves will replace 'null' with the mark of the current player
-        - IF the move will result in either a Win or a draw, the player is notified of that, and the game is ended. 
-        - The board itself will be updated to render the mark
-- After the move is made, the turn is over and the board should be updated to reflect the changes made during the turn
-
-WIN
-If a move results in a win, players are notified of that. 
-    - The game will end. Players cannot click on spaces anymore, and will be prompted to play again by a reset button 
-    - The reset button can be displayed at all times 
-TIE
-If a move results in a tie, players are notified 
-    - Similar result as a win, except the text will change from "Player X won!" to "It's a draw!"
-
-User Interface components
-- Title of game 
-- 3 x 3 grid 
-    * each cell is clickable 
-    * each cell has an indication of which player filled it in (when applicable) 
-- Message indicating which player's turn it is 
-    * this message box will also display who wins the game 
-    * or if no winners, then it will display a tie 
-- Restart button
-    * This restarts the game by setting the game state back to initial 
-
-Game flow components
-- Must keep track of clicks that happen on each cell
-    * player is blocked from trying to fill in an already filled cell and nothing happens
-- Game state is updated 
-- Game state is validated 
-    * Check if there is a winner or if there is a draw 
-- If above results in neither winner or tie, then change the active player
-    * else, stop the game 
-- Update the UI to reflect changes to game state
-- Repeat until a winner or a tie is reached
-*/
-
 'use strict';
-
 // state
 const gameState = {};
 
@@ -73,6 +15,16 @@ const WINNING_BOARDS = [
     [0, 4, 8],
     [2, 4, 6]
 ]
+
+let playerOneName = null;
+let playerTwoName = null;
+
+const cells = document.getElementsByClassName("cell");
+const gameoverMessageElement = document.getElementById("gameoverMessage");
+const gameoverMessageTextElement = document.getElementById("gameover-message-text");
+const resetBtn = document.getElementById('reset-button');
+const cellArray = [...cells];
+buildInitialState();
 
 function buildInitialState() {
     gameState.versusComputer = [''],
@@ -101,10 +53,9 @@ function buildInitialState() {
 }
 
 // helper functions 
-
 function nameReset() {
-playerOneName = null;
-playerTwoName = null;
+    playerOneName = null;
+    playerTwoName = null;
 };
 
 function versusComputer() { 
@@ -116,8 +67,6 @@ function versusComputer() {
     }
 };
 
-let playerOneName = null;
-let playerTwoName = null;
 function getUsers() {
     if (gameState.versusComputer) {
         while (playerOneName === null || !isNaN(playerOneName)) {
@@ -171,7 +120,6 @@ function getFirstTurn() {
     return gameState.turnOrder;
 };
 
-// render
 function renderState(cellArray) {
     gameState.board = cellArray;
     return gameState.board;
@@ -190,7 +138,6 @@ function swapTurn(array, index1, index2) {
     [turnOrder[0], turnOrder[1]] = [turnOrder[1], turnOrder[0]];
     [players[0], players[1]] = [players[1], players[0]];
     //update the rendered display so players see whose turn it is 
-    //move to renderState perhaps
     return gameState;
 };
 
@@ -204,32 +151,6 @@ function turnDisplay() {
     playerTwoDisplay.textContent = `Player 2: ${playerTwoName}`;
 }
 
-//functions to run and global variables 
-
-//target all elements with "cell" class
-const cells = document.getElementsByClassName("cell");
-const gameoverMessageElement = document.getElementById("gameoverMessage");
-const gameoverMessageTextElement = document.getElementById("gameover-message-text");
-const resetBtn = document.getElementById('reset-button');
-//use spread syntax to create array of cell classList to use for board checking
-const cellArray = [...cells];
-buildInitialState();
-// onBoardClick();
-
-// listeners
-  // update state, maybe with another dozen or so helper functions...
-/*when user clicks a cell, 
-- get current state of board and check if the cell is null or not 
-    - additionally, this function can check if the potential mark will result in a win or a tie 
-        - if the game is a win or tie, the winner is declared (if win) or tie declared, 
-        and user is prompted to reset game
-- if it is null, then the mark is made. The board state is updated in gameState as well as on screen 
-- if it is not null, then no mark is made. One way to go about this is to utilize pointer and disable clicks
-on cells that have the property of filled in 
-- after a move is made, and no win or tie declared, then the turns are swapped 
-*/
-
-//current attempt at computer play is that I check to see if the next player will be Computer; if so, pass computerMove
 function handleClick(e) {
   const currentClass = gameState.turnOrder[0];
   const isMarked = e.target.getAttribute("value");
@@ -314,19 +235,16 @@ function isDraw() {
     return cellsAllMarked;
 }
 
-//not used in current iteration of program due to inability to complete computer play functionality 
 function computerCheck() {
     if (gameState.players[0] === "Computer" && gameState.versusComputer === true) {
-        console.log("computerCheck worked");
-        setTimeout(function(){computerMove(gameState.turnOrder[0]);}, 1000);
+        setTimeout(() => {computerMove(gameState.turnOrder[0]);}, 1000);
     }
 }
 
 //simulate an automated click on a random cell based on an array of all cells that are not clicked yet 
 function computerMove(currentClass) {
     let potentialCells = [];
-    for (let i = 0; i < cells.length; i++) {
-        let currentCell = cells[i];
+    for (let currentCell of cells) {
         if (currentCell.classList.contains("X") || currentCell.classList.contains("O")) {
             continue;
         }else {

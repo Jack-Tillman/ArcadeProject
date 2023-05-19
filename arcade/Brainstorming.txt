@@ -93,10 +93,7 @@ every time click on board, (check pic for more)
 05/13/23 Update:
 Will make some revisions before second submission: 
 Focus on the top and if time, do the bottom
-1) make sure turndisplay works for computer 
-- rough version, just utilize setInterval *DONE KINDA
--setTimeout 
-- more complex version, look into minimax algorithm or whatever it is called 
+1)  more complex version, look into minimax algorithm or whatever it is called 
 3) replace the prompts for user names with a box that shows up before game starts 
 - Game Name 
 - Input form, placeholder="What is your name?" 
